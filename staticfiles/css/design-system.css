@@ -1,0 +1,266 @@
+/* =====================================================
+   SEED2SELL 2.0 — DESIGN SYSTEM
+   A deliberate break from the previous "green Bootstrap
+   template" identity. New typography, new palette, new
+   spacing/shadow language. Loaded globally from
+   master.html before any page-specific stylesheet.
+===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* ---- INK / NEUTRAL FOUNDATION ----
+       Deep forest-charcoal instead of bright kelly green —
+       reads as premium editorial rather than "farming site". */
+    --ink: #16241a;              /* near-black forest — headings, nav-dark surfaces */
+    --ink-soft: #3c4a3f;         /* secondary text on light surfaces */
+    --ink-muted: #74806f;        /* tertiary / helper text */
+
+    /* ---- BOTANICAL GREEN ---- */
+    --moss: #4c6b47;             /* primary action color — muted, not neon */
+    --moss-dark: #35492f;        /* hover / pressed */
+    --moss-soft: #e7ede2;        /* pale wash backgrounds, chips */
+
+    /* ---- EARTH ACCENT ---- */
+    --clay: #b5622f;             /* warm terracotta — accent CTAs, highlights */
+    --clay-dark: #954e23;
+    --clay-soft: #f3e2d3;
+
+    /* ---- WARM NEUTRALS ---- */
+    --cream: #faf6ee;            /* page background */
+    --cream-deep: #f2ead9;       /* section alternation */
+    --sand: #e9e0cd;             /* borders on warm surfaces */
+    --paper: #ffffff;            /* cards / surfaces */
+
+    /* ---- SEMANTIC ---- */
+    --success: #4c6b47;
+    --warning: #b5622f;
+    --danger: #a13d2f;
+
+    /* ---- LEGACY ALIASES ----
+       Older templates reference these names directly; point
+       them at the new palette so nothing breaks while every
+       page gets migrated. */
+    --seed-primary: var(--moss);
+    --seed-primary-dark: var(--moss-dark);
+    --seed-primary-light: var(--clay);
+    --seed-primary-tint: var(--moss-soft);
+    --seed-primary-tint-2: var(--cream-deep);
+    --seed-accent: var(--clay);
+    --seed-accent-dark: var(--clay-dark);
+    --seed-bg: var(--cream);
+    --seed-surface: var(--paper);
+    --seed-border: var(--sand);
+    --seed-border-strong: var(--sand);
+    --seed-text: var(--ink);
+    --seed-text-body: var(--ink-soft);
+    --seed-text-muted: var(--ink-muted);
+
+    /* ---- TYPOGRAPHY ----
+       Fraunces: a warm, optical-size variable serif — editorial,
+       organic, distinctive display type for headlines.
+       Inter: clean, highly legible workhorse for body/UI text.
+       Replaces Raleway+Open Sans entirely (not just unifying it —
+       a new system, per the redesign brief). */
+    --font-display: 'Fraunces', serif;
+    --font-heading: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* ---- SPACING SCALE ---- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --space-9: 96px;
+
+    /* ---- RADIUS ----
+       Larger, softer radii than the old system — part of the
+       editorial/premium feel. */
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-pill: 999px;
+
+    /* ---- SHADOWS ----
+       Softer, warmer, lower-contrast than the old bright-green
+       shadows — depth without looking "glassy". */
+    --shadow-sm: 0 2px 12px rgba(22, 36, 26, 0.06);
+    --shadow-md: 0 10px 30px rgba(22, 36, 26, 0.10);
+    --shadow-lg: 0 24px 60px rgba(22, 36, 26, 0.14);
+}
+
+/* =====================================================
+   BASE TYPE
+===================================================== */
+body {
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    background: var(--cream);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+a { color: var(--moss); }
+a:hover { color: var(--moss-dark); }
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+.btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.btn-success {
+    background-color: var(--moss) !important;
+    border-color: var(--moss) !important;
+    border-radius: var(--radius-pill);
+}
+.btn-success:hover,
+.btn-success:focus {
+    background-color: var(--moss-dark) !important;
+    border-color: var(--moss-dark) !important;
+}
+
+.btn-outline-success {
+    color: var(--moss) !important;
+    border-color: var(--moss) !important;
+    border-radius: var(--radius-pill);
+}
+.btn-outline-success:hover {
+    background-color: var(--moss) !important;
+    border-color: var(--moss) !important;
+}
+
+.btn-outline-primary {
+    color: var(--moss) !important;
+    border-color: var(--moss) !important;
+    border-radius: var(--radius-pill);
+}
+.btn-outline-primary:hover {
+    background-color: var(--moss) !important;
+    border-color: var(--moss) !important;
+    color: #fff !important;
+}
+
+.btn-outline-secondary {
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.btn-clay {
+    background-color: var(--clay);
+    border-color: var(--clay);
+    color: #fff;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+}
+.btn-clay:hover {
+    background-color: var(--clay-dark);
+    border-color: var(--clay-dark);
+    color: #fff;
+}
+
+/* =====================================================
+   SHARED CARD LANGUAGE
+===================================================== */
+.ds-card {
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.ds-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+/* =====================================================
+   SHARED FORM LANGUAGE (opt-in utility class)
+===================================================== */
+.ds-form label {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+.ds-form input[type="text"],
+.ds-form input[type="number"],
+.ds-form input[type="email"],
+.ds-form input[type="url"],
+.ds-form input[type="password"],
+.ds-form input[type="file"],
+.ds-form select,
+.ds-form textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--sand);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    background: var(--cream);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ds-form input:focus,
+.ds-form select:focus,
+.ds-form textarea:focus {
+    outline: none;
+    border-color: var(--moss);
+    box-shadow: 0 0 0 3px var(--moss-soft);
+    background: #fff;
+}
+
+/* =====================================================
+   SHARED BADGE LANGUAGE
+===================================================== */
+.ds-badge {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.ds-badge-success { background: var(--moss-soft); color: var(--moss-dark); }
+.ds-badge-warning { background: var(--clay-soft); color: var(--clay-dark); }
+.ds-badge-danger  { background: #f6dfda; color: var(--danger); }
+.ds-badge-neutral { background: var(--cream-deep); color: var(--ink-soft); }
+
+/* =====================================================
+   EYEBROW / SECTION LABEL
+===================================================== */
+.ds-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clay-dark);
+}
+.ds-eyebrow::before {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background: var(--clay);
+    display: inline-block;
+}

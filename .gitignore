@@ -15,7 +15,6 @@ ENV/
 db.sqlite3
 db.sqlite3-journal
 media/
-staticfiles/
 *.log
 
 # Local secrets / environment overrides

@@ -1,0 +1,470 @@
+/* =====================================================
+   SEED2SELL DESIGN SYSTEM (IMPORTANT)
+===================================================== */
+
+:root {
+    /* Aliased to the shared design-system.css tokens so this
+       file's existing var(--seed-green) usages stay correct
+       without needing to be rewritten line by line. */
+    --seed-green: var(--seed-primary);
+    --seed-green-dark: var(--seed-primary-dark);
+    --seed-yellow: var(--seed-accent-dark);
+    --seed-text-dark: var(--seed-text-body);
+    /* --seed-text-muted already exists on :root with this same
+       name from design-system.css, so it's inherited directly —
+       redeclaring it here as itself would be a circular reference. */
+    --seed-light: var(--seed-bg);
+}
+
+/*** Spinner Start ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .8s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+#spinner.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.back-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+}
+/*** Spinner End ***/
+
+
+/*** Buttons ***/
+.btn {
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-success {
+    background: var(--seed-green);
+    border-color: var(--seed-green);
+}
+
+.btn-success:hover {
+    background: var(--seed-green-dark);
+    border-color: var(--seed-green-dark);
+}
+
+/*** NAVBAR (UPGRADED) ***/
+.navbar {
+    background: #fff;
+    padding: 18px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.navbar .navbar-brand {
+    font-size: 40px;      /* Much bigger now */
+    font-weight: 900;     /* Extra bold for logo effect */
+    color: var(--seed-green) !important;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase; /* Makes text stand out more */
+    letter-spacing: 2px;       /* Wider spacing for logo feel */
+}
+
+.navbar .nav-link {
+    color: var(--seed-text-dark);
+    font-weight: 500;
+    margin: 0 10px;
+    position: relative;
+}
+
+.navbar .nav-link:hover {
+    color: var(--seed-green);
+}
+
+.navbar .nav-link.active {
+    color: var(--seed-green);
+}
+
+.navbar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--seed-green);
+    bottom: -6px;
+    left: 0;
+}
+
+/*** HERO SECTION ***/
+.hero-header {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    background:
+        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
+        url("../img/farmer-bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-header h5 {
+    color: var(--seed-yellow);
+    font-weight: 600;
+}
+
+.hero-header h1 {
+    color: var(--seed-green-dark);
+}
+
+.hero-header p {
+    color: var(--seed-text-muted);
+}
+
+/*** HERO CAROUSEL ***/
+.hero-header .col-lg-5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-header .carousel {
+    max-width: 420px;
+    width: 100%;
+}
+
+.hero-header .carousel-inner,
+.hero-header .carousel-item,
+.hero-header .carousel-item img {
+    height: 420px;
+}
+
+.hero-header .carousel-item img {
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    background: var(--seed-green);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    margin-top: 190px;
+}
+
+/* ===== FEATURE ICON FIX ===== */
+
+.featurs-item {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.featurs-icon {
+    width: 70px !important;
+    height: 70px !important;
+    background: var(--seed-green) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+}
+
+.featurs-icon i {
+    color: #ffffff !important;
+    font-size: 28px;
+}
+
+/* REMOVE DIAMOND */
+.featurs-icon::after {
+    display: none !important;
+}
+
+/*** PRODUCTS ***/
+.fruite-item,
+.vesitable-item {
+    transition: 0.3s ease;
+}
+
+.fruite-item:hover,
+.vesitable-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/*** BANNER ***/
+.banner {
+    background: var(--seed-green);
+}
+
+.banner h1 {
+    color: #fff;
+}
+
+/*** COUNTERS ***/
+.counter h4 {
+    color: var(--seed-green);
+}
+
+/*** TESTIMONIAL ***/
+.testimonial-item {
+    transition: 0.3s ease;
+}
+
+.testimonial-item:hover {
+    transform: translateY(-6px);
+}
+
+/*** FOOTER ***/
+.footer {
+    background: #111;
+}
+
+.footer a {
+    color: rgba(255,255,255,0.6);
+}
+
+.footer a:hover {
+    color: var(--seed-yellow);
+}
+
+/* ===== FORCE NAVBAR STYLE ===== */
+.navbar {
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+    padding: 18px 0 !important;
+    height: auto !important;
+}
+
+.navbar-brand {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--seed-green) !important;
+}
+
+.navbar .nav-link {
+    color: var(--seed-text-dark) !important;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: var(--seed-green) !important;
+}
+
+/* ===== SEED2SELL NAVBAR FINAL ===== */
+
+.seed-navbar {
+
+
+    display: flex;
+    align-items: center;
+}
+
+/* BRAND */
+.navbar-brand {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.brand-text {
+    color: #1b5e20;
+}
+
+.brand-number {
+    color: #f9a825;
+    margin: 0 2px;
+}
+
+/* NAV LINKS */
+.navbar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    position: relative;
+    padding: 8px 0;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #1b5e20;
+}
+
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 3px;
+    background: #1b5e20;
+    bottom: -8px;
+    left: 0;
+    transition: 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 100%;
+}
+
+/* DROPDOWN */
+.dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.dropdown-item {
+    padding: 10px 18px;
+}
+
+.dropdown-item:hover {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+/* ICONS */
+.nav-icon {
+    width: 48px;
+    height: 48px;
+    background: #e8f5e9;
+    border-radius: 50%;
+    color: #1b5e20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.nav-icon:hover {
+    background: #1b5e20;
+    color: #ffffff;
+}
+
+/* BODY FIX FOR FIXED NAV */
+body {
+    padding-top: 96px;
+}
+
+
+/* remove dropdown caret (dot) */
+.navbar .dropdown-toggle::after {
+    display: none !important;
+}
+
+.nav-item {
+    list-style: none;
+}
+
+/* ===== SHOP PAGE BANNER ===== */
+
+.shop-banner {
+    height: 240px;
+    background: url("../img/shop3.jpg") center center no-repeat;
+    background-size: cover;
+    border-radius: 0 0 24px 24px;
+}
+
+.shop-banner-overlay {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+}
+
+.shop-banner h1 {
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.shop-banner p {
+    color: #e0f2f1;
+    font-size: 18px;
+    max-width: 600px;
+}
+
+/* Reduce gap after shop banner */
+.shop-banner {
+    margin-bottom: 30px;   /* was effectively too big */
+}
+
+.fruite {
+    margin-top: 0;
+}
+
+/* FORCE REMOVE GAP BETWEEN SHOP BANNER & CONTENT */
+.shop-banner + .container,
+.shop-banner + .container-fluid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+
+/* ===== PRODUCT CARD ZOOM (FIXED FOR YOUR HTML) ===== */
+
+.fruite-item {
+    transition: all 0.3s ease;
+}
+
+.fruite-img {
+    overflow: hidden;              /* VERY IMPORTANT */
+    border-radius: 10px;
+}
+
+.fruite-img img {
+    transition: transform 0.4s ease;
+}
+
+.fruite-item:hover .fruite-img img {
+    transform: scale(1.15);        /* ZOOM LEVEL */
+}
+
+/* Optional: card lift */
+.fruite-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+}
+
+.footer a {
+    color: #bbb;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #28a745;
+    padding-left: 5px;
+    transition: 0.3s;
+}
+/* Product Card Hover */
+.product-card {
+    transition: all 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Carousel caption improve */
+.carousel-caption h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Reduce section gaps globally */
+.container-fluid {
+    margin-bottom: 0 !important;
+}
+
+/* Banner styling */
+.banner .bg-warning {
+    background: linear-gradient(135deg, #ffd54f, #ffca28);
+}
+
