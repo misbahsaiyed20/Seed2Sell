@@ -1,0 +1,86 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
+<div class="form">
+
+    <ul class="tab-group">
+        <li class="tab active"><a href="#signup">Sign Up</a></li>
+        <li class="tab"><a href="#login">Log In</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- SIGNUP TAB -->
+        <div id="signup">
+            <h1>Sign Up for Free</h1>
+
+            {% if signup_error %}
+                <p class="error-msg">{{ signup_error }}</p>
+            {% endif %}
+
+            <form method="POST" action="{% url 'auth_page' %}
+">
+                {% csrf_token %}
+                <div class="field-wrap">
+                    <label>Username *</label>
+                    <input type="text" name="username" >
+                </div>
+                <div class="field-wrap">
+                    <label>Email Address *</label>
+                    <input type="email" name="email" >
+                </div>
+                <div class="field-wrap">
+                    <label>Password *</label>
+                    <input type="password" name="password" required autocomplete="off">
+                </div>
+             <div class="field-wrap row-field">
+    <span>I am a :</span>
+    <div class="select-wrap">
+        <select id="user_type" name="user_type" required>
+            <option value="">--Select--</option>
+            <option value="farmer">Farmer</option>
+            <option value="customer">Customer</option>
+        </select>
+    </div>
+</div>
+
+
+                <button type="submit" class="button button-block">Get Started</button>
+            </form>
+        </div>
+
+        <!-- LOGIN TAB -->
+        <div id="login">
+            <h1>Welcome Back!</h1>
+
+            {% if login_error %}
+                <p class="error-msg">{{ login_error }}</p>
+            {% endif %}
+
+            <form method="POST" action="{% url 'auth_page' %}
+">
+                {% csrf_token %}
+                <div class="field-wrap">
+                    <label>Email Address *</label>
+                    <input type="email" name="email" required autocomplete="off">
+                </div>
+                <div class="field-wrap">
+                    <label>Password *</label>
+                    <input type="password" name="password" required autocomplete="off">
+                </div>
+                <button class="button button-block" type="submit">Log In</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/signup.js' %}"></script>
+
+{% endblock %}
+

@@ -1,0 +1,167 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+
+<style>
+body { background-color: var(--cream) !important; }
+
+.cart-head {
+    padding: var(--space-7) 0 var(--space-6);
+    border-bottom: 1px solid var(--sand);
+    margin-bottom: var(--space-6);
+}
+.cart-head .ds-eyebrow { margin-bottom: var(--space-3); }
+.cart-head h1 { font-family: var(--font-display); font-size: 2.2rem; color: var(--ink); }
+
+.cart-line {
+    display: flex; align-items: center; gap: var(--space-5);
+    padding: var(--space-5) 0; border-bottom: 1px solid var(--sand);
+}
+.cart-line:first-of-type { padding-top: 0; }
+
+.cart-thumb {
+    width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius-md);
+    flex-shrink: 0; background: var(--cream-deep);
+}
+.cart-thumb-fallback {
+    width: 96px; height: 96px; border-radius: var(--radius-md); flex-shrink: 0;
+    background: var(--moss-soft); color: var(--moss-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+}
+
+.cart-info { flex-grow: 1; min-width: 0; }
+.cart-info h5 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--ink); margin-bottom: 3px; overflow-wrap: break-word; }
+.cart-info h5 a { color: var(--ink); text-decoration: none; }
+.cart-info .unit-price { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 6px; }
+.cart-remove { color: var(--danger); font-size: 0.8rem; text-decoration: none; font-weight: 600; }
+.cart-remove:hover { text-decoration: underline; }
+
+.qty-pill {
+    background: var(--cream-deep); border-radius: var(--radius-pill);
+    padding: 6px 6px; display: inline-flex; align-items: center; gap: var(--space-4);
+    flex-shrink: 0;
+}
+.qty-pill a {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--paper);
+    border: 1px solid var(--sand); display: flex; align-items: center; justify-content: center;
+    color: var(--ink); text-decoration: none; font-weight: 700; transition: background 0.15s, color 0.15s;
+}
+.qty-pill a:hover { background: var(--ink); color: var(--cream); }
+.qty-pill span { font-weight: 700; color: var(--ink); min-width: 18px; text-align: center; }
+
+.cart-subtotal { text-align: right; flex-shrink: 0; min-width: 100px; }
+.cart-subtotal .label { display: block; font-size: 0.75rem; color: var(--ink-muted); margin-bottom: 2px; }
+.cart-subtotal .amount { font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem; color: var(--ink); }
+
+.summary-box {
+    background: var(--ink); color: var(--cream);
+    border-radius: var(--radius-lg); padding: var(--space-6);
+    position: sticky; top: 100px;
+}
+.summary-box h5 { font-family: var(--font-heading); color: var(--cream); margin-bottom: var(--space-5); }
+.summary-row { display: flex; justify-content: space-between; margin-bottom: var(--space-3); color: rgba(250,246,238,0.65); font-size: 0.92rem; }
+.summary-total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-top: 1px solid rgba(250,246,238,0.15); padding-top: var(--space-4); margin-top: var(--space-4);
+    font-family: var(--font-heading); font-size: 1.4rem; font-weight: 600; color: var(--cream);
+}
+.checkout-btn {
+    display: block; text-align: center; background: var(--clay); color: #fff !important;
+    border-radius: var(--radius-pill); padding: 14px; font-weight: 600; margin-top: var(--space-5);
+    text-decoration: none; transition: background 0.2s ease;
+}
+.checkout-btn:hover { background: var(--clay-dark); color: #fff !important; }
+
+.trust-note { font-size: 0.78rem; color: rgba(250,246,238,0.45); text-align: center; margin-top: var(--space-4); }
+
+/* Empty state */
+.empty-cart { text-align: center; padding: var(--space-9) 0; }
+.empty-cart .icon-wrap {
+    width: 96px; height: 96px; border-radius: 50%; background: var(--moss-soft); color: var(--moss-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto var(--space-5);
+}
+.empty-cart h2 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: var(--space-3); }
+.empty-cart p { color: var(--ink-muted); margin-bottom: var(--space-5); }
+
+/* Mobile: stack the line into two rows instead of squeezing
+   thumbnail + info + qty + subtotal into one flex row */
+@media (max-width: 576px) {
+    .cart-line { flex-wrap: wrap; gap: var(--space-3); }
+    .cart-thumb, .cart-thumb-fallback { width: 72px; height: 72px; }
+    .cart-info { flex-basis: calc(100% - 72px - var(--space-3)); }
+    .qty-pill { order: 3; margin-left: calc(72px + var(--space-3)); }
+    .cart-subtotal { order: 4; text-align: left; margin-left: auto; }
+}
+</style>
+
+<div class="container">
+    <div class="cart-head">
+        <span class="ds-eyebrow">Your basket</span>
+        <h1>Shopping Cart</h1>
+    </div>
+
+    {% if cart_items %}
+    <div class="row g-5 pb-5">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span style="color: var(--ink-muted); font-size: 0.9rem;">{{ cart_items|length }} item{{ cart_items|length|pluralize }}</span>
+                <a href="{% url 'shop' %}" class="section-link" style="color: var(--ink); font-weight:600; text-decoration:none; border-bottom: 2px solid var(--clay);">
+                    ← Add more items
+                </a>
+            </div>
+
+            {% for item in cart_items %}
+            <div class="cart-line">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" class="cart-thumb" alt="{{ item.product.name }}">
+                {% else %}
+                    <div class="cart-thumb-fallback"><i class="fas fa-leaf"></i></div>
+                {% endif %}
+
+                <div class="cart-info">
+                    <h5><a href="{% url 'shop_detail' item.product.id %}">{{ item.product.name }}</a></h5>
+                    <p class="unit-price">₹{{ item.product.price }} / {{ item.product.unit }}</p>
+                    <a href="{% url 'remove_from_cart' item.product.id %}" class="cart-remove">Remove</a>
+                </div>
+
+                <div class="qty-pill">
+                    <a href="{% url 'decrease_cart' item.product.id %}">−</a>
+                    <span>{{ item.quantity }}</span>
+                    <a href="{% url 'increase_cart' item.product.id %}">+</a>
+                </div>
+
+                <div class="cart-subtotal">
+                    <span class="label">Subtotal</span>
+                    <span class="amount">₹{{ item.get_total_price }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-4">
+            <div class="summary-box">
+                <h5>Order Summary</h5>
+                <div class="summary-row"><span>Items total</span><span>₹{{ total }}</span></div>
+                <div class="summary-row"><span>Delivery</span><span style="color: var(--cream);">Free</span></div>
+                <div class="summary-total"><span>Total</span><span>₹{{ total }}</span></div>
+
+                <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout →</a>
+                <p class="trust-note">✓ Secure checkout &nbsp;·&nbsp; Pay on the next step</p>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="empty-cart">
+        <div class="icon-wrap"><i class="fas fa-shopping-basket"></i></div>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added any farm-fresh goodies yet.</p>
+        <a href="{% url 'shop' %}" class="hero-btn-primary" style="background: var(--ink); color: var(--cream); border-radius: 999px; padding: 14px 30px; font-weight:600; text-decoration:none; display:inline-flex; gap:10px;">
+            Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

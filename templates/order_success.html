@@ -1,0 +1,280 @@
+{% extends "master.html" %}
+{% load static %}
+{% block body %}
+
+<style>
+/* Fonts loaded once site-wide from master.html via design-system.css */
+*, *::before, *::after { box-sizing: border-box; }
+
+body { background: var(--cream); font-family: var(--font-body); }
+
+.success-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.success-card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ── Top header ── */
+.card-top {
+    background: linear-gradient(145deg, var(--ink), var(--moss));
+    padding: 40px 28px 48px;
+    text-align: center;
+    position: relative;
+}
+.card-top::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 28px;
+    background: #fff;
+    border-radius: 28px 28px 0 0;
+}
+
+.check-ring {
+    width: 76px; height: 76px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes popIn {
+    0%   { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.check-svg {
+    width: 36px; height: 36px;
+}
+.check-svg polyline {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    animation: drawCheck 0.45s 0.3s ease forwards;
+}
+@keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+}
+
+.card-top h2 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+}
+.card-top p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+}
+
+/* ── Body ── */
+.card-body { padding: 28px 24px 24px; }
+
+.amount-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+.amount-label { font-size: 13px; color: #999; }
+.amount-value {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -1px;
+}
+.amount-cur {
+    font-size: 18px;
+    color: var(--moss-dark);
+    font-weight: 600;
+    vertical-align: super;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.meta-cell {
+    background: #f8fdf8;
+    border-radius: 14px;
+    padding: 12px 14px;
+}
+.meta-cell-label {
+    font-size: 11px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.meta-cell-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.delivery-box {
+    background: #f0f7f0;
+    border: 1px solid #c8e6c8;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+.delivery-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #2d5a2d;
+}
+
+/* ── Buttons ── */
+.s-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.2s;
+    border: none;
+    margin-bottom: 10px;
+}
+.s-btn:last-child { margin-bottom: 0; }
+.s-btn:hover { transform: translateY(-2px); text-decoration: none; }
+
+.btn-green {
+    background: linear-gradient(135deg, var(--moss), var(--ink));
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(76,107,71,0.25);
+}
+.btn-green:hover {
+    box-shadow: 0 6px 20px rgba(76,107,71,0.35);
+    color: #fff;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1.5px solid #e0e0e0;
+    color: #555;
+}
+.btn-ghost:hover { border-color: var(--moss-dark); color: var(--moss-dark); }
+
+.btn-disabled {
+    background: #f4f4f4;
+    color: #bbb;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .card-top { padding: 30px 20px 40px; }
+    .card-body { padding: 22px 18px 20px; }
+    .amount-value { font-size: 26px; }
+}
+</style>
+
+<div class="success-wrapper">
+    <div class="success-card">
+
+        <!-- TOP -->
+        <div class="card-top">
+            <div class="check-ring">
+                <svg viewBox="0 0 36 36" fill="none" class="check-svg" width="36" height="36">
+                    <polyline points="6,18 14,26 30,10"
+                              stroke="white" stroke-width="3.5"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2>Order Placed!</h2>
+            <p>Thank you for shopping with Seed2Sell</p>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body">
+
+            <div class="amount-row">
+                <span class="amount-label">Total Paid&nbsp;</span>
+                <span class="amount-value">
+                    <span class="amount-cur">₹</span>{{ order.total_amount|default:"0.00" }}
+                </span>
+            </div>
+
+            <div class="meta-grid">
+                <div class="meta-cell">
+                    <div class="meta-cell-label">Order ID</div>
+                    <div class="meta-cell-value">#{{ order.id }}</div>
+                </div>
+                <div class="meta-cell" style="text-align:right;">
+                    <div class="meta-cell-label">Status</div>
+                    <div class="meta-cell-value" style="color: var(--moss-dark);">
+                        {{ order.payment_status }}
+                        {% if order.payment_status == "PAID" %} ✓{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="delivery-box">
+                <div class="delivery-row">
+                    <span>🚚</span>
+                    <span>Estimated delivery in <strong>2–3 days</strong></span>
+                </div>
+                <div class="delivery-row">
+                    <span>📦</span>
+                    <span>Shipped directly from farmers</span>
+                </div>
+            </div>
+
+            <!-- Invoice button -->
+            {% if order.payment_method == "UPI" and order.payment_status == "PAID" %}
+                <a href="{% url 'download_invoice' order.id %}" class="s-btn btn-green">
+                    ↓ &nbsp;Download Invoice
+                </a>
+            {% else %}
+                <button class="s-btn btn-disabled">
+                    Invoice available after payment
+                </button>
+            {% endif %}
+
+            <a href="{% url 'shop' %}" class="s-btn btn-ghost">
+                🛍 &nbsp;Continue Shopping
+            </a>
+
+            <a href="{% url 'order_history' %}" class="s-btn btn-ghost">
+                📋 &nbsp;View My Orders
+            </a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

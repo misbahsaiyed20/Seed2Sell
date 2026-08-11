@@ -1,0 +1,159 @@
+{% extends "master.html" %}
+{% block body %}
+
+<style>
+/* ===== PREMIUM UPI APP PAGE ===== */
+
+body {
+    background: var(--cream);
+}
+
+/* Card */
+.card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.card-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--sand);
+    padding: 20px;
+}
+
+.card-header h5 {
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+}
+
+/* Amount highlight */
+.amount-box {
+    background: var(--moss-soft);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    margin: 12px 0;
+}
+
+.amount-box span {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--moss-dark);
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid var(--sand);
+}
+
+.form-control:focus {
+    border-color: var(--moss);
+    box-shadow: 0 0 0 3px var(--moss-soft);
+}
+
+/* Pay Button */
+/* .btn-success shape/color now comes from design-system.css site-wide;
+   only the hover lift stays page-local. */
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(76,107,71,0.3);
+}
+
+/* Small text */
+.text-note {
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: #eee;
+    margin: 15px 0;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .card-body {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+
+      <div class="card shadow border-0">
+
+        <!-- HEADER -->
+        <div class="card-header text-center">
+          <h5>
+            {% if app == "gpay" %} Google Pay {% else %} PhonePe {% endif %}
+          </h5>
+        </div>
+
+        <div class="card-body px-4 py-4">
+
+          <!-- PAYMENT DETAILS -->
+          <div class="text-center mb-3">
+            <p><strong>Paying to:</strong> Seed2Sell Pvt. Ltd.</p>
+            <p><strong>UPI ID:</strong> seed2sell@upi</p>
+          </div>
+
+          <!-- AMOUNT BOX -->
+          <div class="amount-box">
+            <div>Amount to Pay</div>
+            <span>₹{{ order.total_amount }}</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- FORM -->
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">UPI ID / Mobile Number</label>
+              <input type="text" class="form-control"
+                     placeholder="example@upi or 9XXXXXXXXX" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Remarks (optional)</label>
+              <input type="text" class="form-control"
+                     placeholder="Order #{{ order.id }}">
+            </div>
+
+            <button class="btn btn-success w-100">
+              Pay ₹{{ order.total_amount }}
+            </button>
+          </form>
+
+          <!-- TRUST NOTE -->
+          <p class="text-note">
+            🔒 Secure UPI Payment • No data stored
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

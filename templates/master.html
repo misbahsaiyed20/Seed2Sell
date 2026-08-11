@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Seed2Sell</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Fonts: Fraunces + Inter are loaded via design-system.css -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries -->
+    <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Shared Design System (tokens: color, type, spacing, radius, shadow) -->
+    <link href="{% static 'css/design-system.css' %}" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+
+    <style>
+    /* =============================================
+       NAVBAR — SEED2SELL 2.0 (light, premium)
+       Warm ivory bar with deep forest text — a
+       marketplace navbar, not a dashboard toolbar.
+    ============================================= */
+    .seed-navbar {
+        background: var(--paper) !important;
+        padding: 14px 0 !important;
+        min-height: 76px;
+        border-bottom: 1px solid var(--sand);
+        transition: box-shadow 0.3s ease, padding 0.3s ease;
+    }
+
+    .seed-navbar.scrolled {
+        box-shadow: var(--shadow-md);
+        padding: 8px 0 !important;
+    }
+
+    /* ---- LOGO ---- */
+    .brand-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+    }
+
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+        background: var(--moss);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .brand-logo svg {
+        width: 22px;
+        height: 22px;
+        fill: var(--cream);
+    }
+
+    .brand-text {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--ink);
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+
+    .brand-number {
+        color: var(--clay);
+        font-style: italic;
+    }
+
+    .brand-tagline {
+        font-family: var(--font-body);
+        font-size: 0.62rem;
+        color: var(--ink-muted);
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        display: block;
+        margin-top: 1px;
+    }
+
+    /* ---- NAV LINKS ---- */
+    .seed-navbar .navbar-nav {
+        align-items: center;
+        gap: 4px;
+    }
+
+    .seed-navbar .navbar-nav .nav-link {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 0.92rem;
+        color: var(--ink-soft) !important;
+        padding: 8px 16px !important;
+        border-radius: var(--radius-pill);
+        transition: color 0.2s ease, background 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .seed-navbar .navbar-nav .nav-link:hover,
+    .seed-navbar .navbar-nav .nav-link.nav-active {
+        color: var(--moss-dark) !important;
+        background: var(--moss-soft);
+    }
+
+    /* ---- DROPDOWN MENU ---- */
+    .seed-navbar .dropdown-menu {
+        border-radius: var(--radius-md);
+        border: 1px solid var(--sand);
+        box-shadow: var(--shadow-lg);
+        padding: 8px;
+        margin-top: 8px !important;
+        min-width: 200px;
+        background: var(--paper);
+    }
+
+    .seed-navbar .dropdown-item {
+        padding: 10px 14px;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--ink-soft);
+        transition: background 0.15s, color 0.15s;
+    }
+
+    .seed-navbar .dropdown-item:hover {
+        background: var(--moss-soft);
+        color: var(--moss-dark);
+    }
+
+    .seed-navbar .dropdown-toggle::after {
+        border: none !important;
+        content: '\f107';
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 0.7rem;
+        margin-left: 6px;
+        vertical-align: 1px;
+    }
+
+    /* ---- CART ICON ---- */
+    .nav-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--moss-soft);
+        border: 1px solid var(--sand);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--moss-dark);
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .nav-icon:hover {
+        background: var(--moss);
+        border-color: var(--moss);
+        color: #fff;
+        transform: scale(1.06);
+    }
+
+    .nav-icon .badge {
+        background: var(--clay) !important;
+        color: #fff !important;
+        font-weight: 700;
+    }
+
+    /* ---- USER ICON BUTTON ---- */
+    .user-icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50% !important;
+        background: var(--moss-soft) !important;
+        border: 1px solid var(--sand) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--moss-dark) !important;
+        padding: 0 !important;
+        transition: background 0.2s ease, color 0.2s ease;
+        text-decoration: none;
+    }
+
+    .user-icon-btn:hover {
+        background: var(--moss) !important;
+        border-color: var(--moss) !important;
+        color: #fff !important;
+    }
+
+    .user-icon-btn::after {
+        display: none !important;
+    }
+
+    /* ---- LOGIN / SIGNUP PILL ---- */
+    .login-btn {
+        background: var(--moss) !important;
+        color: #fff !important;
+        border-radius: var(--radius-pill) !important;
+        padding: 10px 22px !important;
+        font-family: var(--font-body);
+        font-size: 0.85rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em;
+        transition: background 0.2s ease, transform 0.2s ease;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+    }
+
+    .login-btn:hover {
+        background: var(--moss-dark) !important;
+        color: #fff !important;
+        transform: scale(1.03);
+        text-decoration: none;
+    }
+
+    /* ---- TOGGLER ---- */
+    .navbar-toggler {
+        border: 1px solid var(--sand) !important;
+        border-radius: var(--radius-sm);
+        padding: 6px 10px;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: 0 0 0 3px var(--moss-soft) !important;
+    }
+
+
+    /* Mobile: tighten outer padding and shorten the login label
+       so brand + toggler + cart + login all fit one row without
+       crowding at narrow widths. */
+    @media (max-width: 480px) {
+        .seed-navbar .container-fluid { padding-left: 16px !important; padding-right: 16px !important; }
+        .brand-tagline { display: none; }
+        .login-btn .login-text { display: none; }
+        .login-btn { padding: 10px 14px !important; }
+    }
+
+    /* =============================================
+       FOOTER — SEED2SELL 2.0
+       Deep forest charcoal — the same brand tone the
+       navbar/hero already establish, not a separate
+       beige/sand website bolted onto the end.
+    ============================================= */
+    .footer {
+        background: var(--ink) !important;
+        border-top: none;
+        color: rgba(250,246,238,0.6);
+    }
+
+    .footer h4.text-light {
+        font-family: var(--font-heading) !important;
+        font-weight: 600;
+        font-size: 1.15rem;
+        color: var(--cream) !important;
+        margin-bottom: 18px !important;
+    }
+
+    .footer p {
+        color: rgba(250,246,238,0.55) !important;
+        font-size: 0.9rem;
+        line-height: 1.75;
+        margin-bottom: 6px;
+        font-family: var(--font-body);
+    }
+
+    .footer .btn-link {
+        color: rgba(250,246,238,0.7) !important;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-family: var(--font-body);
+        display: inline-block;
+        margin-bottom: 11px;
+        transition: color 0.2s ease, padding-left 0.2s ease;
+    }
+
+    .footer .btn-link:hover {
+        color: var(--clay) !important;
+        padding-left: 5px;
+    }
+
+    .footer-social {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+    }
+
+    .footer-social a {
+        width: 38px;
+        height: 38px;
+        background: rgba(250,246,238,0.08);
+        border: 1px solid rgba(250,246,238,0.16);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cream);
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .footer-social a:hover {
+        background: var(--clay);
+        border-color: var(--clay);
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    .footer-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 11px;
+        color: rgba(250,246,238,0.55);
+        font-size: 0.9rem;
+        font-family: var(--font-body);
+    }
+
+    .footer-contact-item i {
+        color: #8fae86;
+        margin-top: 3px;
+        width: 14px;
+        flex-shrink: 0;
+    }
+
+    .footer-copyright {
+        background: transparent;
+        border-top: 1px solid rgba(250,246,238,0.12);
+        padding: 18px 0;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .footer-copyright p {
+        color: rgba(250,246,238,0.45) !important;
+        font-size: 0.82rem;
+        margin: 0;
+        font-family: var(--font-body);
+    }
+
+    .footer .btn.btn-link {
+        color: #e08b7a !important;
+        font-size: 0.87rem;
+        padding: 0;
+        text-decoration: none;
+        margin-bottom: 0;
+    }
+
+    .footer .btn.btn-link:hover {
+        color: #f0a494 !important;
+    }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top seed-navbar">
+    <div class="container-fluid px-3 px-lg-5">
+
+        <!-- LOGO -->
+        <a class="navbar-brand brand-wrapper" href="{% url 'index' %}">
+            <div class="brand-logo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 3-9 8"/>
+                </svg>
+            </div>
+            <div>
+                <span class="brand-text">Seed<span class="brand-number">2</span>Sell</span>
+                <span class="brand-tagline">Farm to Table</span>
+            </div>
+        </a>
+
+        <!-- TOGGLER -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- MENU -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}" data-url="{% url 'index' %}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop' %}" data-url="{% url 'shop' %}">Shop</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       id="categoryDropdown"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        {% for category in categories %}
+                        <li>
+                            <a class="dropdown-item"
+                               href="{% url 'shop_by_category' category.id %}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}" data-url="{% url 'about' %}">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}" data-url="{% url 'contact' %}">Contact</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="d-flex align-items-center gap-3">
+
+            <!-- CART -->
+            <a href="{% url 'cart' %}" class="nav-icon position-relative">
+                <i class="fas fa-shopping-cart"></i>
+                {% if cart_count > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge bg-success">
+                    {{ cart_count }}
+                </span>
+                {% endif %}
+            </a>
+
+            {% if user.is_authenticated %}
+            <div class="dropdown">
+                <a class="user-icon-btn dropdown-toggle"
+                   href="#"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <i class="fa fa-user"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="{% url 'customer_dashboard' %}">
+                            <i class="fa fa-tachometer-alt me-2 text-success"></i> My Account
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="dropdown-item text-danger">
+                                <i class="fa fa-sign-out-alt me-2"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+            {% else %}
+            <a class="login-btn" href="{% url 'auth_page' %}">
+                <i class="fa fa-user"></i> <span class="login-text">Login / Signup</span>
+            </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+</nav>
+
+<!-- ================= CONTENT ================= -->
+{% block body %}{% endblock %}
+
+<!-- ================= FOOTER ================= -->
+<div class="container-fluid footer pt-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-5">
+
+            <div class="col-lg-3">
+                <h4 class="text-light mb-3">Seed2Sell</h4>
+                <p>Connecting farmers directly with customers. Fresh, organic, and chemical-free products from verified farmers across India.</p>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h4 class="text-light mb-3">Quick Links</h4><br>
+                <a class="btn-link" href="{% url 'index' %}">Home</a><br>
+                <a class="btn-link" href="{% url 'shop' %}">Shop</a><br>
+                <a class="btn-link" href="{% url 'about' %}">About Us</a><br>
+                <a class="btn-link" href="{% url 'contact' %}">Contact Us</a>
+            </div>
+
+            <div class="col-lg-3">
+                <h4 class="text-light mb-3">Account</h4><br>
+                {% if user.is_authenticated %}
+                    <a class="btn-link" href="{% url 'customer_dashboard' %}">My Account</a>
+                    <form method="post" action="{% url 'logout' %}" style="margin-top:10px;">
+                        {% csrf_token %}
+                        <button class="btn btn-link text-danger p-0">Logout</button>
+                    </form>
+                {% else %}
+                    <a class="btn-link" href="{% url 'auth_page' %}">Login / Signup</a>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-3">
+                <h4 class="text-light mb-3">Contact</h4>
+                <div class="footer-contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>seed2sell@gmail.com</span>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 99999 99999</span>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Ahmedabad, Gujarat, India</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer-copyright">
+        <p>© 2026 <strong style="color: var(--moss-dark);">Seed2Sell</strong>. All Rights Reserved. Made with 🌱 for farmers of India.</p>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+<script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+/* Navbar scroll shadow */
+window.addEventListener('scroll', function() {
+    document.querySelector('.seed-navbar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+/* Dynamic active underline — JS sets nav-active on current page link only */
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.seed-navbar .navbar-nav .nav-link[data-url]').forEach(function(link) {
+        const linkPath = link.getAttribute('data-url');
+        if (currentPath === linkPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+            link.classList.add('nav-active');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

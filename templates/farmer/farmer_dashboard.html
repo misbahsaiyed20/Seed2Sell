@@ -1,0 +1,449 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.9);
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        --accent-green: var(--seed-primary);
+    }
+
+    body {
+        background: var(--seed-bg);
+        font-family: var(--font-body);
+        transition: background 0.3s ease;
+    }
+
+    /* 1. Header: Modern Gradient Glass */
+    .dashboard-header {
+        background: linear-gradient(135deg, var(--seed-primary-dark), var(--seed-primary));
+        color: white;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px rgba(27, 94, 32, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dashboard-header::before {
+        content: ""; position: absolute; top: -50px; right: -50px;
+        width: 150px; height: 150px; background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+    }
+
+    /* 2. Stat Boxes: Elevated Grid */
+    .stat-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: var(--card-shadow);
+        border: 1px solid rgba(0,0,0,0.02);
+        transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    }
+
+    .stat-icon {
+        width: 50px; height: 50px;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.25rem;
+    }
+
+    .bg-light-success { background: #ecfdf5; color: var(--seed-primary); }
+    .bg-light-blue { background: #eff6ff; color: #3b82f6; }
+    .bg-light-purple { background: #f5f3ff; color: #8b5cf6; }
+
+    /* Profit Special Highlight */
+    .stat-box.profit {
+        background: linear-gradient(135deg, var(--seed-primary), var(--seed-primary-dark));
+        color: white;
+    }
+    .stat-box.profit i, .stat-box.profit h6, .stat-box.profit h3 { color: white; }
+
+    /* 3. Cards & Tables */
+    .card {
+        border: none;
+        border-radius: 24px;
+        box-shadow: var(--card-shadow);
+        background: white;
+        overflow: hidden;
+    }
+
+    .table thead th {
+        background: #f8fafc;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        border: none;
+        padding: 1.2rem;
+    }
+
+    .table tbody td {
+        padding: 1.2rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    /* 4. Action Buttons */
+    .btn-action {
+        width: 35px; height: 35px;
+        padding: 0; display: inline-flex;
+        align-items: center; justify-content: center;
+        border-radius: 10px;
+    }
+
+    /* 5. Dark Mode Overrides */
+    body.dark-mode {
+        background: #0f172a;
+        color: #f1f5f9;
+    }
+    body.dark-mode .card,
+    body.dark-mode .stat-box,
+    body.dark-mode .quick-card,
+    body.dark-mode .profile-card {
+        background: #1e293b;
+        color: #f1f5f9;
+        border-color: #334155;
+    }
+    body.dark-mode .table thead th { background: #334155; color: #94a3b8; }
+    body.dark-mode .table td { border-color: #334155; color: #cbd5e1; }
+    body.dark-mode .text-muted { color: #94a3b8 !important; }
+
+    .dark-toggle {
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        border: none; color: white;
+        padding: 10px 20px; border-radius: 50px;
+        font-weight: 600;
+    }
+
+    .order-row { transition: opacity 0.4s ease, transform 0.4s ease; }
+</style>
+
+<div class="container py-5">
+
+    <div class="dashboard-header mb-5 p-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h1 class="fw-bold mb-1 text-white">Farmer Dashboard</h1>
+                <p class="opacity-75 mb-0">Monitor your farm's performance and inventory</p>
+            </div>
+            <div class="text-end mt-3 mt-md-0 d-flex gap-3 align-items-center">
+                <span class="badge bg-white text-success px-4 py-2 rounded-pill fw-bold">
+                    <i class="fas fa-check-circle me-1"></i> {{ request.user.username }}
+                </span>
+                <button onclick="toggleDarkMode()" class="dark-toggle">
+                    <i class="fas fa-moon me-2"></i> Dark Mode
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-icon bg-light-success"><i class="fa fa-box"></i></div>
+                <div>
+                    <h6 class="text-muted small mb-1">Total Products</h6>
+                    <h3 class="fw-bold mb-0">{{ total_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-icon bg-light-blue"><i class="fa fa-user"></i></div>
+                <div>
+                    <h6 class="text-muted small mb-1">Account Holder</h6>
+                    <h5 class="fw-bold mb-0 text-truncate" style="max-width: 150px;">{{ request.user.username }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-box">
+                <div class="stat-icon bg-light-purple"><i class="fa fa-map-marker-alt"></i></div>
+                <div>
+                    <h6 class="text-muted small mb-1">Location</h6>
+                    <h5 class="fw-bold mb-0">{{ farmer_profile.location|default:"Not set" }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+            <div class="card p-4 h-100">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="profile-avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-3" style="width: 70px; height: 70px;">
+                        {{ request.user.username|slice:":1"|upper }}
+                    </div>
+                    <div class="ms-3">
+                        <h5 class="fw-bold mb-0">{{ request.user.username }}</h5>
+                        <p class="text-success small mb-0"><i class="fas fa-certificate me-1"></i> Verified Farmer</p>
+                    </div>
+                </div>
+                <div class="border-top pt-3">
+                    <p class="text-muted mb-2"><i class="fas fa-phone-alt me-2"></i> {{ farmer_profile.phone|default:"Not set" }}</p>
+                    <p class="text-muted mb-0"><i class="fas fa-envelope me-2"></i> {{ request.user.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">📈 Earnings Overview</h5>
+                </div>
+                <canvas id="earningsChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-body p-0">
+            <div class="p-4 d-flex justify-content-between align-items-center bg-light border-bottom">
+                <h5 class="mb-0 fw-bold"><i class="fas fa-store text-success me-2"></i>My Products</h5>
+                <a href="{% url 'add_product' %}" class="btn btn-success rounded-pill px-4">
+                    <i class="fa fa-plus me-2"></i> Add New Product
+                </a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td class="ps-4" style="width: 100px;">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="rounded-3 shadow-sm" style="width:60px; height:50px; object-fit:cover;">
+                                {% else %}
+                                    <div class="bg-light rounded-3 d-flex align-items-center justify-content-center text-muted small" style="width:60px; height:50px;">No image</div>
+                                {% endif %}
+                            </td>
+                            <td class="fw-bold text-dark">{{ product.name }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ product.category.name|default:"-" }}</span></td>
+                            <td class="fw-bold">₹{{ product.price }}</td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'edit_product' product.id %}" class="btn btn-outline-primary btn-action me-1"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'delete_product' product.id %}" class="btn btn-outline-danger btn-action" onclick="return confirm('Delete this product?');"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center py-5 text-muted">No products found. Start adding your harvest!</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-body p-0">
+            <div class="p-4 bg-dark text-white">
+                <h5 class="mb-0 fw-bold"><i class="fas fa-shopping-cart me-2 text-success"></i>Recent Orders</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Order ID</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_items %}
+                        <tr class="order-row d-none" data-index="{{ forloop.counter }}">
+                            <td class="ps-4 fw-bold">#{{ item.order.id }}</td>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>₹{{ item.price }}</td>
+                            <td class="fw-bold">₹{{ item.price|floatformat:2|add:""|floatformat }} × {{ item.quantity }}</td>
+                            <td>
+                                <span class="badge {% if item.order.payment_method == 'COD' %}bg-warning-subtle text-dark{% else %}bg-info-subtle text-dark{% endif %}">
+                                    {{ item.order.payment_method }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if item.order.payment_status == "PAID" %}
+                                    <span class="badge bg-success-subtle text-success">Paid</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4 text-muted small">{{ item.order.created_at|date:"d M Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="8" class="text-center py-5 text-muted">No orders found yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3 text-center border-top">
+                <button id="seeMoreBtn" class="btn btn-outline-success rounded-pill px-4">See More Orders</button>
+                <button id="showLessBtn" class="btn btn-outline-secondary rounded-pill px-4 d-none">Show Less</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4 col-lg-2">
+            <div class="stat-box">
+                <div>
+                    <h6 class="text-muted small mb-1">Products</h6>
+                    <h3 class="fw-bold mb-0 text-success">{{ total_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="stat-box">
+                <div>
+                    <h6 class="text-muted small mb-1">Orders</h6>
+                    <h3 class="fw-bold mb-0 text-primary">{{ total_orders }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="stat-box">
+                <div>
+                    <h6 class="text-muted small mb-1">Earnings</h6>
+                    <h3 class="fw-bold mb-0 text-dark">₹{{ total_earning }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            <div class="stat-box">
+                <div>
+                    <h6 class="text-muted small mb-1">Monthly</h6>
+                    <h3 class="fw-bold mb-0 text-info">₹{{ monthly_earning }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            <div class="stat-box profit">
+                <div>
+                    <h6 class="small mb-1">Total Profit</h6>
+                    <h3 class="fw-bold mb-0">₹{{ total_profit }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// CHART LOGIC
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById('earningsChart');
+    if (!ctx) return;
+    const isDark = document.body.classList.contains("dark-mode");
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+                label: "Earnings (₹)",
+                data: [500, 1200, 800, 1500, 900, 1800],
+                borderColor: 'var(--seed-primary)',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.4,
+                fill: true,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: isDark ? "#94a3b8" : "#64748b" }, grid: { display: false } },
+                y: { ticks: { color: isDark ? "#94a3b8" : "#64748b" }, grid: { borderDash: [5, 5] } }
+            }
+        }
+    });
+});
+
+// SEE MORE/LESS LOGIC
+let visibleCount = 5;
+const step = 10;
+const rows = document.querySelectorAll('.order-row');
+const seeMoreBtn = document.getElementById('seeMoreBtn');
+const showLessBtn = document.getElementById('showLessBtn');
+
+function updateRows() {
+    rows.forEach((row, index) => {
+        if (index < visibleCount) {
+            row.classList.remove('d-none');
+            row.style.opacity = "1";
+        } else {
+            row.classList.add('d-none');
+        }
+    });
+    showLessBtn.classList.toggle('d-none', visibleCount <= 5);
+    seeMoreBtn.style.display = visibleCount >= rows.length ? 'none' : 'inline-block';
+}
+
+updateRows();
+
+seeMoreBtn.addEventListener('click', () => {
+    visibleCount += step;
+    updateRows();
+});
+
+showLessBtn.addEventListener('click', () => {
+    visibleCount = 5;
+    updateRows();
+    window.scrollTo({ top: 500, behavior: 'smooth' });
+});
+
+// THEME TOGGLE
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+}
+
+window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+};
+
+// INITIAL ANIMATION
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".card, .stat-box").forEach((el, i) => {
+        el.style.opacity = 0;
+        el.style.transform = "translateY(20px)";
+        setTimeout(() => {
+            el.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+            el.style.opacity = 1;
+            el.style.transform = "translateY(0)";
+        }, i * 50);
+    });
+});
+</script>
+
+{% endblock %}

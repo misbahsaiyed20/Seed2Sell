@@ -1,0 +1,12 @@
+<h2>Orders for Your Products</h2>
+
+{% for item in orders %}
+    <div class="border p-3 mb-3">
+        <p><strong>Product:</strong> {{ item.product.name }}</p>
+        <p><strong>Qty:</strong> {{ item.quantity }}</p>
+        <p><strong>Order ID:</strong> {{ item.order.id }}</p>
+        <p><strong>Customer:</strong> {{ item.order.customer.username }}</p>
+    </div>
+{% empty %}
+<p>No orders yet.</p>
+{% endfor %}

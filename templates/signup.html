@@ -1,0 +1,167 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+<style>
+    body {
+        padding-top: 66px;
+    }
+</style>
+
+<div class="sa-root">
+    <div class="sa-blob sa-blob-1"></div>
+    <div class="sa-blob sa-blob-2"></div>
+    <div class="sa-blob sa-blob-3"></div>
+
+    <div class="sa-card">
+        <div class="sa-tabs">
+            <div class="sa-tab-slider"></div>
+            <button type="button" class="sa-tab {% if active_tab != 'login' %}sa-tab--active{% endif %}" data-tab="signup">Sign Up</button>
+            <button type="button" class="sa-tab {% if active_tab == 'login' %}sa-tab--active{% endif %}" data-tab="login">Log In</button>
+        </div>
+
+        <!-- ===== SIGNUP PANE ===== -->
+        <div class="sa-pane {% if active_tab != 'login' %}sa-pane--active{% endif %}" id="signup">
+            <div class="sa-head">
+                <div class="sa-icon-circle">🌱</div>
+                <h2 class="sa-title">Join Seed2Sell</h2>
+                <p class="sa-sub">Connect directly with farmers & fresh produce</p>
+            </div>
+
+            <form method="POST" action="{% url 'auth_page' %}" autocomplete="off">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="signup">
+
+                <!-- ERROR BLOCK — shows when form has validation errors -->
+                {% if form and form.errors %}
+                <div style="background-color:#fff2f0;border:1px solid #ff4d4f;color:#c0392b;padding:15px;border-radius:8px;margin-bottom:20px;font-weight:500;">
+                    <p style="margin:0 0 8px 0;font-weight:bold;">⚠️ Please fix the following errors:</p>
+                    <ul style="margin:0;padding-left:18px;font-size:0.85rem;">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="sa-field">
+                    <label class="sa-label">Username</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="text" name="username"
+                               value="{{ form.username.value|default:'' }}"
+                               required placeholder="Choose a username">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">Email</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="email" name="email"
+                               value="{{ form.email.value|default:'' }}"
+                               required placeholder="Enter your email">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">Phone Number</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="tel" name="phone"
+                               value="{{ form.phone.value|default:'' }}"
+                               required placeholder="Enter your 10-digit phone number">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">Password</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="password" name="password"
+                               required placeholder="Minimum 6 characters">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">Confirm Password</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="password" name="confirm_password"
+                               required placeholder="Re-enter your password">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">I want to...</label>
+                    <div class="sa-role-row">
+                        <label class="sa-role-opt">
+                            <input type="radio" name="role" value="customer"
+                                   {% if form.role.value == 'customer' or not form.role.value %}checked{% endif %}
+                                   required>
+                            <div class="sa-role-box">
+                                <span class="sa-role-emoji">🛒</span>
+                                <span class="sa-role-name">Buy Fresh</span>
+                                <span class="sa-role-hint">Customer Account</span>
+                            </div>
+                        </label>
+                        <label class="sa-role-opt">
+                            <input type="radio" name="role" value="farmer"
+                                   {% if form.role.value == 'farmer' %}checked{% endif %}>
+                            <div class="sa-role-box">
+                                <span class="sa-role-emoji">🌾</span>
+                                <span class="sa-role-name">Sell Produce</span>
+                                <span class="sa-role-hint">Farmer Account</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="sa-btn" type="submit">Create My Account</button>
+            </form>
+        </div>
+
+        <!-- ===== LOGIN PANE ===== -->
+        <div class="sa-pane {% if active_tab == 'login' %}sa-pane--active{% endif %}" id="login">
+            <div class="sa-head">
+                <div class="sa-icon-circle">🚜</div>
+                <h2 class="sa-title">Welcome Back</h2>
+                <p class="sa-sub">Log in to Seed2Sell to continue</p>
+            </div>
+
+            <form method="POST" action="{% url 'auth_page' %}"  autocomplete="new-password">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="login">
+
+                <!-- LOGIN ERROR BLOCK -->
+                {% if login_error %}
+                <div style="background-color:#fff2f0;border:1px solid #ff4d4f;color:#c0392b;padding:12px;border-radius:8px;margin-bottom:20px;">
+                    <p style="margin:0;">⚠️ {{ login_error }}</p>
+                </div>
+                {% endif %}
+
+                <div class="sa-field">
+                    <label class="sa-label">Username</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="text" name="username"
+       required placeholder="Enter your username" autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="sa-field">
+                    <label class="sa-label">Password</label>
+                    <div class="sa-input-box">
+                        <input class="sa-input" type="password" name="password"
+       required placeholder="Enter your password" autocomplete="new-password">
+                    </div>
+                </div>
+
+                <button class="sa-btn" type="submit">Secure Log In</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}

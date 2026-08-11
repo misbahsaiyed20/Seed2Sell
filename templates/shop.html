@@ -1,0 +1,337 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+
+<style>
+body { background-color: var(--cream) !important; }
+
+/* ---------- BANNER ---------- */
+.market-banner {
+    background: var(--ink);
+    padding: var(--space-8) 0 var(--space-7);
+}
+.market-banner .ds-eyebrow { color: var(--clay); }
+.market-banner h1 {
+    font-family: var(--font-display);
+    color: var(--cream);
+    font-size: 2.6rem;
+    margin: var(--space-3) 0 0;
+}
+.market-banner p { color: rgba(250,246,238,0.6); margin-top: var(--space-2); }
+
+/* ---------- TOOLBAR ---------- */
+.market-toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: var(--space-4); flex-wrap: wrap;
+    margin: var(--space-6) 0 var(--space-5);
+}
+.market-toolbar .form-select {
+    border: 1.5px solid var(--sand);
+    border-radius: var(--radius-pill);
+    background-color: var(--paper);
+    min-width: 200px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    padding: 8px 16px;
+}
+.market-toolbar .form-select:focus { border-color: var(--moss); box-shadow: 0 0 0 3px var(--moss-soft); }
+
+/* ---------- SIDEBAR ---------- */
+.market-panel {
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-5);
+}
+.market-panel h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: var(--space-4);
+}
+
+.market-search { display: flex; gap: 8px; }
+.market-search input {
+    border: 1.5px solid var(--sand);
+    border-radius: var(--radius-pill);
+    padding: 9px 16px;
+    font-size: 0.88rem;
+    flex-grow: 1;
+    background: var(--cream);
+}
+.market-search input:focus { outline: none; border-color: var(--moss); }
+.market-search button {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: var(--ink); color: var(--cream); border: none;
+}
+
+.cat-list { list-style: none; margin: 0; padding: 0; }
+.cat-list li {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid var(--sand);
+}
+.cat-list li:last-child { border-bottom: none; }
+.cat-list a {
+    color: var(--ink-soft); text-decoration: none; font-size: 0.92rem;
+    transition: color 0.15s;
+}
+.cat-list a:hover, .cat-list a.is-active { color: var(--moss-dark); font-weight: 600; }
+.cat-list .count {
+    font-size: 0.7rem; font-weight: 700; background: var(--moss-soft);
+    color: var(--moss-dark); padding: 2px 9px; border-radius: var(--radius-pill);
+}
+
+.price-panel input {
+    width: 100%; margin-bottom: 10px; padding: 9px 14px;
+    border: 1.5px solid var(--sand); border-radius: var(--radius-md);
+    background: var(--cream); font-size: 0.9rem;
+}
+.price-panel input:focus { outline: none; border-color: var(--moss); }
+.price-panel button {
+    width: 100%; background: var(--clay); border: none; color: #fff;
+    font-weight: 600; border-radius: var(--radius-pill); padding: 10px;
+}
+.price-panel button:hover { background: var(--clay-dark); }
+
+.picks-row { display: flex; align-items: center; gap: 12px; margin-bottom: var(--space-4); }
+.picks-row:last-child { margin-bottom: 0; }
+.picks-row img { width: 56px; height: 56px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0; }
+.picks-row .name { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0; }
+.picks-row .price { font-size: 0.78rem; color: var(--ink-muted); }
+
+/* ---------- PRODUCT GRID CARD ---------- */
+.m-card {
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.m-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+.m-card-img { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--cream-deep); }
+.m-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.m-card:hover .m-card-img img { transform: scale(1.06); }
+
+.m-card-cat {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--paper); color: var(--moss-dark);
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: var(--radius-pill);
+}
+
+.m-card-body { padding: var(--space-4); flex-grow: 1; display: flex; flex-direction: column; }
+.m-card-body h5 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--ink); margin-bottom: 4px; }
+.m-card-body a.title-link { text-decoration: none; }
+.m-card-desc { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: var(--space-4); flex-grow: 1; }
+.m-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.m-card-price { font-family: var(--font-heading); font-weight: 600; color: var(--ink); font-size: 1.1rem; }
+.m-card-price small { font-family: var(--font-body); font-weight: 400; color: var(--ink-muted); font-size: 0.72rem; }
+
+.m-add-btn {
+    background: var(--ink); color: var(--cream); border: none;
+    border-radius: var(--radius-pill); padding: 9px 18px; font-weight: 600; font-size: 0.85rem;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 0.2s ease;
+}
+.m-add-btn:hover { background: var(--moss-dark); color: #fff; }
+
+/* ---------- PAGINATION ---------- */
+.market-pagination { display: flex; justify-content: center; gap: 6px; margin-top: var(--space-7); }
+.market-pagination a, .market-pagination span {
+    min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-md); border: 1px solid var(--sand);
+    color: var(--ink-soft); font-weight: 600; text-decoration: none; font-size: 0.88rem;
+    transition: background 0.15s;
+}
+.market-pagination a:hover { background: var(--moss-soft); }
+.market-pagination span.current { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+</style>
+
+<!-- Marketplace Banner -->
+<div class="market-banner">
+    <div class="container">
+        <span class="ds-eyebrow">The marketplace</span>
+        <h1>{% if selected_category %}{{ selected_category.name }}{% else %}Everything, fresh from the farm{% endif %}</h1>
+        <p>Fresh • Natural • Seeds • Grains • Vegetables • Fruits</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="market-toolbar">
+        <span style="color: var(--ink-muted); font-size: 0.9rem;">
+            {{ products.paginator.count }} product{{ products.paginator.count|pluralize }} found
+        </span>
+
+        <form method="get" class="d-flex">
+            <input type="hidden" name="q" value="{{ request.GET.q }}">
+            <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+            <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+            <select name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="">Default sorting</option>
+                <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                <option value="price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name (A–Z)</option>
+                <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="row g-4 pb-5">
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-3">
+
+            <div class="market-panel">
+                <h4>Search</h4>
+                <form method="get" class="market-search">
+                    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="What are you looking for?">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+
+            <div class="market-panel">
+                <h4>Categories</h4>
+                <ul class="cat-list">
+                    <li>
+                        <a href="{% url 'shop' %}" class="{% if not selected_category %}is-active{% endif %}">All Products</a>
+                        <span class="count">{{ products.paginator.count }}</span>
+                    </li>
+                    {% for category in categories %}
+                    <li>
+                        <a href="{% url 'shop_by_category' category.id %}"
+                           class="{% if selected_category == category %}is-active{% endif %}">
+                            {{ category.name }}
+                        </a>
+                        <span class="count">{{ category.product_count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="market-panel price-panel">
+                <h4>Price range</h4>
+                <form method="get">
+                    <input type="number" name="min_price" value="{{ request.GET.min_price }}" placeholder="Min price">
+                    <input type="number" name="max_price" value="{{ request.GET.max_price }}" placeholder="Max price">
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+
+            {% if products %}
+            <div class="market-panel">
+                <h4>Popular right now</h4>
+                {% for item in products|slice:":3" %}
+                <div class="picks-row">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    {% else %}
+                        <img src="{% static 'img/fruite-item-1.jpg' %}" alt="{{ item.name }}">
+                    {% endif %}
+                    <div>
+                        <p class="name">{{ item.name }}</p>
+                        <span class="price">₹{{ item.price }} / {{ item.unit }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="col-lg-9">
+            <div class="row g-4">
+
+                {% for product in products %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="m-card">
+                        <div class="m-card-img">
+                            <a href="{% url 'shop_detail' product.id %}">
+                                {% if product.category %}<span class="m-card-cat">{{ product.category.name }}</span>{% endif %}
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="{% static 'img/fruite-item-1.jpg' %}" alt="{{ product.name }}">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="m-card-body">
+                            <a href="{% url 'shop_detail' product.id %}" class="title-link">
+                                <h5>{{ product.name }}</h5>
+                            </a>
+                            <p class="m-card-desc">{{ product.description|default:"Fresh product"|truncatewords:10 }}</p>
+                            <div class="m-card-footer">
+                                <span class="m-card-price">₹{{ product.price }}<small> /{{ product.unit }}</small></span>
+                                <button class="m-add-btn add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}">
+                                    <i class="fa fa-shopping-bag"></i> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">No products available right now.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="market-pagination">
+                {% if products.has_previous %}
+                    <a href="?page={{ products.previous_page_number }}&sort={{ current_sort }}&q={{ request.GET.q }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}">&laquo;</a>
+                {% endif %}
+
+                {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                        <span class="current">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}&sort={{ current_sort }}&q={{ request.GET.q }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if products.has_next %}
+                    <a href="?page={{ products.next_page_number }}&sort={{ current_sort }}&q={{ request.GET.q }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}">&raquo;</a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".add-to-cart-btn").forEach(function(button) {
+        button.addEventListener("click", function() {
+            let url = this.getAttribute("data-url");
+            fetch(url, { method: "GET", headers: { "X-Requested-With": "XMLHttpRequest" } })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    let badge = document.getElementById("cart-badge");
+                    if (badge) {
+                        badge.innerText = data.cart_count;
+                    } else {
+                        let cartIcon = document.querySelector(".nav-icon");
+                        let span = document.createElement("span");
+                        span.id = "cart-badge";
+                        span.className = "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success";
+                        span.style.fontSize = "12px";
+                        span.innerText = data.cart_count;
+                        cartIcon.appendChild(span);
+                    }
+                }
+            })
+            .catch(error => console.log(error));
+        });
+    });
+});
+</script>
+{% endblock %}

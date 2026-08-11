@@ -1,0 +1,1137 @@
+/*
+=============================================================
+  Seed2Sell — Mobile Responsive CSS
+  File: static/css/responsive.css
+  Add this link in master.html AFTER style.css:
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+=============================================================
+*/
+
+
+/* =============================================================
+   BREAKPOINTS USED:
+   xl  = 1200px+   (large desktop)
+   lg  = 992–1199px (desktop)
+   md  = 768–991px  (tablet)
+   sm  = 576–767px  (large mobile)
+   xs  = 0–575px    (small mobile)
+============================================================= */
+
+
+/* =============================================================
+   1. GLOBAL / BASE
+============================================================= */
+
+body {
+    padding-top: 66px; /* offset for fixed navbar */
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* =============================================================
+   2. NAVBAR
+============================================================= */
+
+/* Tablet and mobile */
+@media (max-width: 991px) {
+
+    .seed-navbar .container-fluid {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* Nav menu when collapsed */
+    .seed-navbar .navbar-nav {
+        height: auto !important;
+        padding: 10px 0 14px;
+        border-top: 1px solid #e8f5e9;
+        margin-top: 8px;
+    }
+
+    .seed-navbar .navbar-nav .nav-item {
+        display: block !important;
+        align-items: unset !important;
+    }
+
+    /* Nav links become full-width rows */
+    .seed-navbar .navbar-nav .nav-link {
+        height: auto !important;
+        padding: 10px 16px !important;
+        border-radius: 8px !important;
+        margin: 2px 8px !important;
+        width: auto !important;
+    }
+
+    /* No underline on mobile — use highlight instead */
+    .seed-navbar .navbar-nav .nav-link::after {
+        display: none !important;
+    }
+
+    .seed-navbar .navbar-nav .nav-link:hover,
+    .seed-navbar .navbar-nav .nav-link.nav-active {
+        background: #e8f5e9 !important;
+        color: #1b5e20 !important;
+    }
+
+    /* Right side gap smaller on tablet */
+    .seed-navbar .d-flex.align-items-center {
+        gap: 8px !important;
+    }
+
+    /* Hide brand tagline on tablet */
+    .brand-tagline {
+        display: none;
+    }
+
+    /* Dropdown full width on mobile */
+    .seed-navbar .dropdown-menu {
+        width: calc(100% - 16px) !important;
+        margin: 4px 8px !important;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 575px) {
+
+    .brand-text {
+        font-size: 1.1rem !important;
+    }
+
+    .brand-number {
+        font-size: 1.2rem !important;
+    }
+
+    .brand-logo {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    /* Login/signup — shorter on very small screens */
+    .login-btn {
+        padding: 8px 12px !important;
+        font-size: 0.78rem !important;
+    }
+
+    /* Cart and user icon smaller gap */
+    .nav-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .user-icon-btn {
+        width: 36px !important;
+        height: 36px !important;
+    }
+}
+
+
+/* =============================================================
+   3. HERO SECTION (index.html)
+============================================================= */
+
+@media (max-width: 991px) {
+
+    .hero-header .container {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    .hero-header .col-lg-7 {
+        text-align: center;
+    }
+
+    .hero-header h1.display-3 {
+        font-size: clamp(1.6rem, 5vw, 2.4rem) !important;
+    }
+
+    .hero-header h5 {
+        font-size: 0.95rem;
+    }
+
+    .hero-header .fs-5 {
+        font-size: 1rem !important;
+    }
+
+    .hero-header .col-lg-5 {
+        margin-top: 16px;
+    }
+
+    /* Carousel smaller on tablet */
+    .hero-header #carouselId {
+        max-width: 100% !important;
+    }
+
+    .hero-header .carousel-inner {
+        height: 320px !important;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .hero-header {
+        padding-top: 8px !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hero-header .carousel-inner {
+        height: 260px !important;
+    }
+
+    .hero-header h1.display-3 {
+        font-size: clamp(1.4rem, 5vw, 2rem) !important;
+        line-height: 1.25 !important;
+    }
+
+    .hero-header .btn-lg {
+        padding: 10px 28px !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .hero-header .carousel-inner {
+        height: 220px !important;
+    }
+
+    .hero-header h1.display-3 {
+        font-size: 1.4rem !important;
+    }
+}
+
+
+/* =============================================================
+   4. FEATURE CARDS (featurs section)
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .featurs-item {
+        padding: 22px 14px !important;
+    }
+
+    .featurs-icon {
+        width: 58px !important;
+        height: 58px !important;
+    }
+
+    .featurs-icon i {
+        font-size: 22px !important;
+    }
+
+    .featurs-item h5 {
+        font-size: 0.88rem !important;
+        min-height: 36px !important;
+    }
+
+    .featurs-item p {
+        font-size: 0.8rem !important;
+    }
+
+    /* 2 cards per row on mobile */
+    .featurs .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 400px) {
+
+    /* 1 card per row on very small phones */
+    .featurs .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* =============================================================
+   5. PRODUCT CARDS (fruite section — homepage & shop)
+============================================================= */
+
+@media (max-width: 767px) {
+
+    /* 2 products per row on mobile */
+    .fruite .col-md-6,
+    .fruite .col-xl-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .fruite-item .p-4 {
+        padding: 12px !important;
+    }
+
+    .fruite-item h4 {
+        font-size: 0.9rem !important;
+    }
+
+    .fruite-item .text-muted.small {
+        display: none; /* hide description on small screens */
+    }
+
+    .fruite-item .fs-5 {
+        font-size: 0.9rem !important;
+    }
+
+    .fruite-img img {
+        height: 160px !important;
+    }
+
+    .fruite-item .btn {
+        font-size: 0.78rem !important;
+        padding: 4px 10px !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    /* 1 product per row on very small phones */
+    .fruite .col-md-6,
+    .fruite .col-xl-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* =============================================================
+   6. SERVICE / PROMO CARDS
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .service .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .service-item img {
+        height: 160px !important;
+    }
+
+    .service-content h5 {
+        font-size: 0.85rem !important;
+    }
+
+    .service-content h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .service .container.py-5 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+}
+
+
+/* =============================================================
+   7. VEGETABLE CAROUSEL SECTION
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .vesitable .container h1 {
+        font-size: 1.4rem !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .vesitable-item .p-4 {
+        padding: 12px !important;
+    }
+
+    .vesitable-item h4 {
+        font-size: 0.92rem !important;
+    }
+
+    .vesitable-item p {
+        font-size: 0.82rem !important;
+    }
+}
+
+
+/* =============================================================
+   8. BANNER SECTION
+============================================================= */
+
+@media (max-width: 991px) {
+
+    .banner h1.display-3 {
+        font-size: 1.8rem !important;
+    }
+
+    .banner p.display-3 {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .banner .col-lg-6:last-child {
+        display: none !important; /* hide image on mobile */
+    }
+
+    .banner h1.display-3 {
+        font-size: 1.5rem !important;
+    }
+
+    .banner p.display-3 {
+        font-size: 0.95rem !important;
+        margin-bottom: 10px !important;
+    }
+
+    .banner p.mb-4 {
+        font-size: 0.88rem !important;
+    }
+
+    .banner-btn {
+        padding: 10px 24px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .banner .col-lg-6 .py-4 {
+        padding: 20px 0 !important;
+    }
+}
+
+
+/* =============================================================
+   9. BEST SELLER SECTION
+============================================================= */
+
+@media (max-width: 767px) {
+
+    /* 2 per row on mobile */
+    .container-fluid.py-4.bg-light .col-xl-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .container-fluid.py-4.bg-light .rounded.bg-white {
+        padding: 14px !important;
+    }
+
+    .container-fluid.py-4.bg-light img {
+        height: 120px !important;
+    }
+
+    .container-fluid.py-4.bg-light h5 {
+        font-size: 0.88rem !important;
+    }
+
+    .container-fluid.py-4.bg-light h4 {
+        font-size: 0.9rem !important;
+    }
+
+    .container-fluid.py-4.bg-light .btn {
+        font-size: 0.78rem !important;
+        padding: 4px 12px !important;
+    }
+
+    .container-fluid.py-4.bg-light .display-5 {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .container-fluid.py-4.bg-light .col-xl-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* =============================================================
+   10. COUNTER / STATS SECTION
+============================================================= */
+
+@media (max-width: 767px) {
+
+    /* 2 counters per row */
+    .counter {
+        padding: 20px 12px !important;
+    }
+
+    .counter i {
+        font-size: 1.6rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .counter h1 {
+        font-size: 1.8rem !important;
+    }
+
+    .counter h4 {
+        font-size: 0.72rem !important;
+    }
+
+    .bg-light.p-5 {
+        padding: 20px 16px !important;
+    }
+}
+
+
+/* =============================================================
+   11. TESTIMONIAL SECTION
+============================================================= */
+
+@media (max-width: 991px) {
+
+    .testimonial-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .testimonial-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .testimonial {
+        padding: 40px 0 !important;
+    }
+
+    .testimonial-header h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .testimonial-card {
+        padding: 20px 16px !important;
+    }
+
+    .testimonial-card .review-text {
+        font-size: 0.88rem !important;
+    }
+}
+
+/* Old owl carousel testimonial (if used) */
+@media (max-width: 767px) {
+
+    .testimonial-item {
+        padding: 20px 16px !important;
+    }
+
+    .testimonial-item img {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .testimonial-header h1.display-5 {
+        font-size: 1.5rem !important;
+    }
+}
+
+
+/* =============================================================
+   12. SHOP PAGE
+============================================================= */
+
+@media (max-width: 991px) {
+
+    /* Sidebar goes below products on tablet/mobile */
+    .fruite .col-lg-9 {
+        order: 1;
+    }
+
+    .fruite .col-lg-3 {
+        order: 2;
+    }
+
+    /* Shop page product grid — 2 per row on tablet */
+    .fruite .col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 575px) {
+
+    /* Shop page — 2 per row on mobile */
+    .fruite .col-md-6.col-lg-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    /* Sidebar search/filter full width */
+    .fruite .col-lg-3 .form-control {
+        font-size: 0.85rem;
+    }
+
+    /* Sort dropdown responsive */
+    .fruite .form-select {
+        font-size: 0.82rem;
+        min-width: 130px !important;
+    }
+
+    /* Shop page title smaller */
+    .fruite h1.mb-3 {
+        font-size: 1.3rem !important;
+    }
+}
+
+/* Mobile filter toggle (for sidebar collapsing) */
+.mobile-filter-toggle {
+    display: none;
+    width: 100%;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.sidebar-collapsible {
+    display: block;
+}
+
+@media (max-width: 991px) {
+
+    .mobile-filter-toggle {
+        display: block !important;
+    }
+
+    .sidebar-collapsible {
+        display: none;
+    }
+
+    .sidebar-collapsible.show {
+        display: block;
+    }
+}
+
+
+/* =============================================================
+   13. SHOP DETAIL PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .product-image-card img {
+        height: 240px !important;
+    }
+
+    .product-info-card {
+        padding: 18px !important;
+        margin-top: 12px;
+    }
+
+    .product-info-card h3 {
+        font-size: 1.3rem !important;
+    }
+
+    .product-price {
+        font-size: 1.6rem !important;
+    }
+
+    .trust-badges {
+        gap: 6px !important;
+    }
+
+    .trust-badge {
+        font-size: 0.72rem !important;
+        padding: 4px 8px !important;
+    }
+
+    .btn-add-cart {
+        padding: 9px 18px !important;
+        font-size: 0.88rem !important;
+    }
+
+    /* Tabs smaller on mobile */
+    .product-tabs .nav-link {
+        padding: 8px 12px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .product-tabs .tab-content {
+        padding: 16px !important;
+        font-size: 0.88rem !important;
+    }
+
+    /* Sidebar below product detail */
+    .product-detail-section .col-lg-4 {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 575px) {
+
+    .page-header {
+        padding: 36px 0 24px !important;
+    }
+
+    .page-header h1 {
+        font-size: 1.3rem !important;
+    }
+
+    .breadcrumb-item {
+        font-size: 0.82rem;
+    }
+}
+
+
+/* =============================================================
+   14. ABOUT PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .about-header {
+        padding: 46px 0 32px !important;
+    }
+
+    .about-header h1 {
+        font-size: clamp(1.5rem, 6vw, 2.2rem) !important;
+    }
+
+    .about-section {
+        padding: 36px 0 !important;
+    }
+
+    .info-card {
+        padding: 22px 18px !important;
+        margin-bottom: 12px;
+    }
+
+    .offer-section {
+        padding: 40px 0 !important;
+    }
+
+    /* Offer items 2 per row on mobile */
+    .offer-section .col-lg-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .offer-item {
+        padding: 18px 14px !important;
+    }
+
+    .offer-item .offer-icon {
+        font-size: 1.6rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .stats-strip {
+        padding: 28px 0 !important;
+    }
+
+    .stat-item h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .stat-item p {
+        font-size: 0.78rem !important;
+    }
+
+    /* Why cards stack on mobile */
+    .why-section .col-lg-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .why-card {
+        padding: 16px !important;
+    }
+
+    .why-section {
+        padding: 36px 0 !important;
+    }
+
+    .cta-section {
+        padding: 40px 0 !important;
+    }
+
+    .cta-section h2 {
+        font-size: 1.4rem !important;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .offer-section .col-lg-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* =============================================================
+   15. CONTACT PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .contact-header {
+        padding: 46px 0 32px !important;
+    }
+
+    .contact-header h1 {
+        font-size: clamp(1.5rem, 6vw, 2.2rem) !important;
+    }
+
+    .contact-section {
+        padding: 30px 0 40px !important;
+    }
+
+    .contact-info-card {
+        padding: 16px 14px !important;
+    }
+
+    .contact-info-icon {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 1rem !important;
+    }
+
+    .contact-info-card h5 {
+        font-size: 0.88rem !important;
+    }
+
+    .contact-info-card p {
+        font-size: 0.82rem !important;
+    }
+
+    .contact-form-card {
+        padding: 20px 16px !important;
+    }
+
+    .contact-form-card h4 {
+        font-size: 1.05rem !important;
+    }
+
+    .contact-form-card .form-control {
+        padding: 10px 12px !important;
+        font-size: 0.88rem !important;
+    }
+
+    .btn-send {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 24px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .map-section {
+        padding: 30px 0 !important;
+    }
+
+    .map-box {
+        height: 200px !important;
+    }
+}
+
+
+/* =============================================================
+   16. SIGNUP / AUTH PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .sa-root {
+        padding: 20px 12px !important;
+        min-height: calc(100vh - 66px);
+        align-items: flex-start !important;
+    }
+
+    .sa-card {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 16px !important;
+    }
+
+    .sa-blob {
+        display: none !important; /* hide decorative blobs on mobile */
+    }
+}
+
+@media (max-width: 575px) {
+
+    .sa-pane {
+        padding: 20px 16px !important;
+    }
+
+    .sa-title {
+        font-size: 1.35rem !important;
+    }
+
+    .sa-sub {
+        font-size: 0.85rem !important;
+    }
+
+    .sa-role-row {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .sa-role-box {
+        padding: 10px 14px !important;
+    }
+
+    .sa-btn {
+        font-size: 0.9rem !important;
+        padding: 12px !important;
+    }
+
+    .sa-input {
+        font-size: 0.9rem !important;
+    }
+
+    .sa-label {
+        font-size: 0.85rem !important;
+    }
+
+    .sa-icon-circle {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 1.6rem !important;
+    }
+}
+
+
+/* =============================================================
+   17. CART PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .cart-table th,
+    .cart-table td {
+        font-size: 0.82rem !important;
+        padding: 8px 6px !important;
+    }
+
+    .cart-table img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    /* Cart total section */
+    .cart-total {
+        margin-top: 20px;
+    }
+}
+
+
+/* =============================================================
+   18. CHECKOUT PAGE
+============================================================= */
+
+@media (max-width: 767px) {
+
+    .checkout-form .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .checkout-summary {
+        margin-top: 24px;
+    }
+}
+
+
+/* =============================================================
+   19. FARMER DASHBOARD
+============================================================= */
+
+@media (max-width: 991px) {
+
+    /* Dashboard sidebar collapses on tablet */
+    .farmer-sidebar {
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .farmer-main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 767px) {
+
+    /* Stat cards 2 per row on mobile */
+    .dashboard-stat-card {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    /* Product table scroll on mobile */
+    .farmer-product-table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .farmer-product-table table {
+        min-width: 500px;
+    }
+}
+
+
+/* =============================================================
+   20. ORDER SUCCESS / ORDER HISTORY PAGES
+============================================================= */
+
+@media (max-width: 575px) {
+
+    .order-success-icon {
+        font-size: 3rem !important;
+    }
+
+    .order-success h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .order-table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .order-table table {
+        min-width: 400px;
+    }
+}
+
+
+/* =============================================================
+   21. FOOTER
+============================================================= */
+
+@media (max-width: 991px) {
+
+    .footer .row {
+        gap: 24px 0 !important;
+    }
+}
+
+@media (max-width: 767px) {
+
+    /* Footer columns 2 per row on mobile */
+    .footer .col-lg-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        text-align: center;
+    }
+
+    .footer-social {
+        justify-content: center !important;
+    }
+
+    .footer-contact-item {
+        justify-content: center !important;
+    }
+
+    .footer h4.text-light {
+        text-align: center;
+    }
+
+    .footer .btn-link {
+        display: block;
+        text-align: center;
+    }
+}
+
+@media (max-width: 575px) {
+
+    /* Footer 1 column on small mobile */
+    .footer .col-lg-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .footer-copyright p {
+        font-size: 0.76rem !important;
+    }
+}
+
+
+/* =============================================================
+   22. PAGINATION
+============================================================= */
+
+@media (max-width: 575px) {
+
+    .d-flex.justify-content-center a,
+    .d-flex.justify-content-center span {
+        padding: 6px 10px !important;
+        font-size: 0.82rem !important;
+        margin: 2px !important;
+    }
+}
+
+
+/* =============================================================
+   23. GENERAL UTILITY FIXES
+============================================================= */
+
+/* Fix Bootstrap container padding on small screens */
+@media (max-width: 575px) {
+
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .container-fluid {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* Section headings font size clamp */
+    h1, .h1 {
+        font-size: clamp(1.4rem, 5vw, 2rem) !important;
+    }
+
+    h2, .h2 {
+        font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
+    }
+
+    .display-3 {
+        font-size: clamp(1.4rem, 5vw, 2rem) !important;
+    }
+
+    .display-5 {
+        font-size: clamp(1.3rem, 4vw, 1.8rem) !important;
+    }
+
+    /* Buttons full width on very small screens */
+    .btn-lg {
+        padding: 10px 24px !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Prevent horizontal scroll on all screens */
+@media (max-width: 991px) {
+
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Tables horizontal scroll on mobile */
+@media (max-width: 767px) {
+
+    .table-responsive-mobile {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* =============================================================
+   END OF RESPONSIVE.CSS
+============================================================= */

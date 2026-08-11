@@ -1,0 +1,355 @@
+/* ============================================================
+   SEED2SELL — AUTH PAGE  (Complete Redesign)
+   ============================================================ */
+
+/* Font import removed — page now uses the site-wide Raleway +
+   Open Sans loaded once in master.html, instead of pulling in
+   its own Playfair Display + Plus Jakarta Sans pairing. */
+
+/* ── variables ──
+   Aliased to the shared design-system.css tokens so every
+   var(--g1)/var(--gold)/etc. usage below stays correct without
+   rewriting each rule individually. */
+:root {
+    --g1: var(--seed-primary-dark);
+    --g2: var(--seed-primary);
+    --g3: var(--seed-primary-light);
+    --g-light: var(--seed-primary-tint);
+    --g-glow: rgba(46,125,50,.15);
+    --gold: var(--seed-accent);
+    --text: var(--seed-text-body);
+    --muted: var(--seed-text-muted);
+    --border: var(--seed-border-strong);
+    --white: var(--seed-surface);
+    --bg: var(--seed-bg);
+    --radius: var(--radius-lg);
+    --card-shadow: var(--shadow-lg);
+}
+
+/* ── reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ============================================================
+   ROOT  (full page)
+   ============================================================ */
+.sa-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 16px;
+    background: var(--bg);
+    font-family: var(--font-body);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ── decorative blobs (Background magic) ── */
+.sa-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .5;
+    pointer-events: none;
+    z-index: 0;
+}
+.sa-blob-1 { width: 450px; height: 450px; background: #b8e4bb; top: -100px; left: -150px; }
+.sa-blob-2 { width: 350px; height: 350px; background: #d4f0d6; bottom: -50px; right: -100px; }
+.sa-blob-3 { width: 200px; height: 200px; background: #fde68a; top: 50%; right: 10%; transform: translateY(-50%); opacity: .3; }
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.sa-card {
+    position: relative;
+    z-index: 1;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+    animation: cardUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes cardUp {
+    from { opacity:0; transform:translateY(30px) scale(.98); }
+    to   { opacity:1; transform:translateY(0)    scale(1);   }
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.sa-tabs {
+    position: relative;
+    display: flex;
+    background: #f4f9f4;
+    padding: 8px;
+    gap: 4px;
+    border-bottom: 1px solid #e2ece2;
+}
+
+.sa-tab {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    padding: 12px 0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: color .3s;
+    letter-spacing: .2px;
+}
+
+.sa-tab--active { color: var(--g1); }
+
+.sa-tab-slider {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: calc(50% - 10px);
+    height: calc(100% - 16px);
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 1;
+}
+
+/* ============================================================
+   PANES
+   ============================================================ */
+.sa-pane { display:none; padding: 40px 36px; }
+.sa-pane--active {
+    display: block;
+    animation: paneIn .4s cubic-bezier(.4,0,.2,1) both;
+}
+
+@keyframes paneIn {
+    from { opacity:0; transform:translateY(15px); }
+    to   { opacity:1; transform:translateY(0);    }
+}
+
+/* ── header ── */
+.sa-head { text-align:center; margin-bottom: 30px; }
+
+.sa-icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; height: 60px;
+    background: var(--g-light);
+    border-radius: 50%;
+    font-size: 28px;
+    margin-bottom: 16px;
+    border: 3px solid #c8e6c9;
+    box-shadow: 0 8px 16px rgba(45,138,62,.1);
+}
+
+.sa-title {
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.sa-sub { font-size: 14px; color: var(--muted); font-weight: 500; }
+
+/* ============================================================
+   FIELDS
+   ============================================================ */
+.sa-field { margin-bottom: 20px; }
+
+.sa-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 8px;
+}
+
+.sa-input-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    background: #fbfefb;
+    transition: all .3s ease;
+    overflow: hidden;
+}
+
+.sa-input-box.sa-focused {
+    border-color: var(--g2);
+    box-shadow: 0 0 0 4px var(--g-glow);
+    background: var(--white);
+}
+
+.sa-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    padding: 14px 44px 14px 16px;
+    line-height: 1.2;
+}
+
+.sa-input::placeholder { color: #b8ccb8; font-weight: 400; }
+
+.sa-eye {
+    position: absolute;
+    right: 14px;
+    border: none;
+    background: none;
+    color: #8fa890;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color .2s;
+}
+.sa-eye:hover { color: var(--g2); }
+
+/* ============================================================
+   ROLE SELECTOR (The Farmer vs Customer buttons)
+   ============================================================ */
+.sa-role-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.sa-role-opt { cursor: pointer; }
+.sa-role-opt input[type=radio] { display: none; }
+
+.sa-role-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 12px 16px;
+    background: #fbfefb;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    text-align: center;
+}
+
+.sa-role-opt:hover .sa-role-box {
+    border-color: #a3cfa4;
+    transform: translateY(-2px);
+}
+
+.sa-role-opt input:checked + .sa-role-box {
+    border-color: var(--g2);
+    background: var(--g-light);
+    box-shadow: 0 6px 16px var(--g-glow);
+    transform: translateY(-2px);
+}
+
+.sa-role-emoji { font-size: 32px; line-height: 1; margin-bottom: 4px; }
+.sa-role-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.sa-role-hint { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+/* ============================================================
+   EXTRAS
+   ============================================================ */
+.sa-extras {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.sa-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+}
+.sa-remember input { display: none; }
+
+.sa-check {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+}
+.sa-remember input:checked + .sa-check { background: var(--g2); border-color: var(--g2); }
+.sa-remember input:checked + .sa-check::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 800; }
+
+.sa-forgot { font-size: 13.5px; font-weight: 700; color: var(--g2); text-decoration: none; }
+.sa-forgot:hover { color: var(--g1); text-decoration: underline; }
+
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
+.sa-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--g1) 0%, var(--g3) 100%);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: all .3s ease;
+    box-shadow: 0 8px 24px rgba(30,107,40,.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.sa-btn:hover  { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(30,107,40,.4); }
+.sa-btn:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(30,107,40,.3); }
+
+/* ============================================================
+   TRUST STRIP
+   ============================================================ */
+.sa-trust {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 28px;
+    font-size: 13.5px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: rgba(255,255,255,0.6);
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.8);
+}
+.sa-dot { opacity: .5; margin: 0 4px; }
+
+@media (max-width: 500px) {
+    .sa-pane { padding: 30px 24px; }
+    .sa-title { font-size: 1.6rem; }
+    .sa-trust { font-size: 11.5px; }
+}

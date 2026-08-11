@@ -1,0 +1,389 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block body %}
+
+<style>
+body { background-color: #f5f7f2 !important; padding-top: 66px; }
+
+/* PAGE HEADER */
+.contact-header {
+    background:
+        linear-gradient(rgba(15, 50, 15, 0.70), rgba(15, 50, 15, 0.70)),
+        url("{% static 'img/contact.jpg' %}") center/cover no-repeat;
+    padding: 80px 0 50px;
+    text-align: center;
+}
+
+.contact-header h1 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: #ffffff;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    margin-bottom: 14px;
+}
+
+.contact-header p {
+    color: #c8e6c9;
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* MAIN SECTION */
+.contact-section { padding: 60px 0 80px; }
+
+/* INFO CARDS */
+.contact-info-card {
+    background: #ffffff;
+    border: 1px solid #d4e6cc;
+    border-radius: 14px;
+    padding: 22px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 2px 12px rgba(34,85,34,0.07);
+    margin-bottom: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(34,85,34,0.13);
+}
+
+.contact-info-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.contact-info-card h5 {
+    font-weight: 700;
+    color: #1a3a1a;
+    font-size: 0.92rem;
+    margin-bottom: 4px;
+}
+
+.contact-info-card p {
+    color: #5a7a5a;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* SOCIAL LINKS */
+.contact-socials {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.social-btn {
+    width: 42px;
+    height: 42px;
+    background: #e8f5e9;
+    border: 1.5px solid #c8e6c9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2e7d32;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.social-btn:hover {
+    background: #2e7d32;
+    border-color: #2e7d32;
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* FORM CARD */
+.contact-form-card {
+    background: #ffffff;
+    border: 1px solid #d4e6cc;
+    border-radius: 16px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 20px rgba(34,85,34,0.09);
+}
+
+@media (max-width: 575px) {
+    .contact-form-card { padding: 22px 18px; }
+}
+
+.contact-form-card h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: #1a3a1a;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+}
+
+.contact-form-card .sub {
+    color: #6c9e6c;
+    font-size: 0.88rem;
+    margin-bottom: 24px;
+}
+
+/* Form inputs */
+.contact-form-card .form-control {
+    border: 1.5px solid #d4e6cc;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.92rem;
+    color: #1a3a1a;
+    background: #fafdf8;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form-card .form-control:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 0.2rem rgba(46,125,50,0.15);
+    background: #ffffff;
+    outline: none;
+}
+
+.contact-form-card .form-control::placeholder { color: #9abf9a; }
+
+.contact-form-card label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2d4a2d;
+    margin-bottom: 6px;
+}
+
+.btn-send {
+    background: #2e7d32;
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 36px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: background 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-send:hover {
+    background: #1b5e20;
+    color: #ffffff;
+    transform: scale(1.03);
+}
+
+/* MAP PLACEHOLDER */
+.map-section {
+    background: #eef3ea;
+    border-top: 1px solid #d4e6cc;
+    padding: 50px 0;
+}
+
+.map-section h2 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: #1a3a1a;
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+}
+
+.map-section .sub {
+    color: #6c9e6c;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+}
+
+.map-box {
+    background: #d4e6cc;
+    border-radius: 16px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #b8d4b0;
+    overflow: hidden;
+}
+
+.map-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 14px;
+}
+
+/* SUCCESS MESSAGE */
+.success-msg {
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: #1b5e20;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .contact-header { padding: 46px 0 32px; }
+    .contact-section { padding: 36px 0 50px; }
+}
+</style>
+
+<!-- PAGE HEADER -->
+<div class="contact-header">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>Have questions, suggestions, or need help? We're always here to support you.</p>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="contact-section">
+    <div class="container">
+        <div class="row g-4 g-lg-5">
+
+            <!-- LEFT: CONTACT INFO -->
+            <div class="col-12 col-md-5">
+
+                <h4 style="font-family:'Raleway',sans-serif; font-weight:700; color:#1a3a1a; margin-bottom:20px; font-size:1.2rem;">
+                    📍 Get in Touch
+                </h4>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📍</div>
+                    <div>
+                        <h5>Our Location</h5>
+                        <p>Seed2Sell Support Team<br>Gujarat, India</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">✉️</div>
+                    <div>
+                        <h5>Email Us</h5>
+                        <p>support@seed2sell.com<br>
+                        <a href="mailto:support@seed2sell.com" style="color:#2e7d32; font-size:0.82rem; text-decoration:none;">Send an email →</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📞</div>
+                    <div>
+                        <h5>Call Us</h5>
+                        <p>+91 98765 43210<br>
+                        <span style="font-size:0.82rem; color:#9abf9a;">Mon – Sat: 9:00 AM – 6:00 PM</span></p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">🕐</div>
+                    <div>
+                        <h5>Working Hours</h5>
+                        <p>Monday – Saturday<br>9:00 AM – 6:00 PM IST</p>
+                    </div>
+                </div>
+
+                <!-- SOCIAL LINKS -->
+                <div class="mt-4">
+                    <p style="font-size:0.88rem; font-weight:600; color:#2d4a2d; margin-bottom:10px;">Follow Us</p>
+                    <div class="contact-socials">
+                        <a href="#" class="social-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-btn" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: CONTACT FORM -->
+            <div class="col-12 col-md-7">
+                <div class="contact-form-card">
+
+                    <h4>✉ Send Us a Message</h4>
+                    <p class="sub">We'll get back to you within 24 hours!</p>
+
+                    <!-- Success message (shown after submit via JS) -->
+                    <div class="success-msg" id="successMsg">
+                        ✅ Thank you! Your message has been sent successfully. We'll get back to you soon!
+                    </div>
+
+                    <form method="post" id="contactForm">
+                        {% csrf_token %}
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-sm-6">
+                                <label>Your Name</label>
+                                <input type="text" class="form-control" placeholder="e.g. Priya Sharma" required>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Your Email</label>
+                                <input type="email" class="form-control" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Subject</label>
+                            <input type="text" class="form-control" placeholder="How can we help you?" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label>Your Message</label>
+                            <textarea class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-send">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- MAP SECTION -->
+<div class="map-section">
+    <div class="container">
+        <h2>Find Us</h2>
+        <p class="sub">We're based in Gujarat, India 🇮🇳</p>
+        <div class="map-box">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.8782697591744!2d72.58054931539224!3d23.033862184944547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1622000000000!5m2!1sen!2sin"
+                allowfullscreen=""
+                loading="lazy"
+                title="Seed2Sell Location">
+            </iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+/* Show success message on form submit */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const msg = document.getElementById('successMsg');
+    msg.style.display = 'block';
+    this.reset();
+    setTimeout(() => { msg.style.display = 'none'; }, 5000);
+});
+</script>
+
+{% endblock %}

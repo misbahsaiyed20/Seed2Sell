@@ -1,0 +1,541 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block body %}
+
+<style>
+/* =====================================================
+   SEED2SELL 2.0 — HOMEPAGE
+===================================================== */
+
+body { background-color: var(--cream) !important; }
+
+.section-pad { padding: var(--space-9) 0; }
+.section-pad-sm { padding: var(--space-7) 0; }
+
+/* ---------- HERO ---------- */
+.hero-2 {
+    background: var(--cream);
+    padding: 48px 0 var(--space-8);   /* was: 28px 0 var(--space-8) */
+}
+
+.hero-eyebrow { margin-bottom: var(--space-4); }
+
+.hero-2 h1 {
+    font-family: var(--font-display);
+    font-size: 3.6rem;
+    line-height: 1.05;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: var(--space-5);
+}
+
+.hero-2 h1 em {
+    font-style: italic;
+    color: var(--moss);
+}
+
+.hero-2 .hero-sub {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--ink-muted);
+    max-width: 460px;
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+}
+
+.hero-cta-row { display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; }
+
+.hero-btn-primary {
+    background: var(--ink);
+    color: var(--cream) !important;
+    border-radius: var(--radius-pill);
+    padding: 15px 30px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+.hero-btn-primary:hover { background: var(--moss-dark); transform: translateY(-2px); }
+
+.hero-btn-secondary {
+    color: var(--moss-dark) !important;
+    background: transparent;
+    border: 1.5px solid var(--sand);
+    border-radius: var(--radius-pill);
+    padding: 13.5px 28px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.hero-btn-secondary:hover {
+    color: var(--moss-dark) !important;
+    background: var(--moss-soft);
+    border-color: var(--moss);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.hero-media {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 1 / 1;
+}
+
+.hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 25% 35%;
+}
+
+.hero-stat-card {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(6px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: calc(100% - 40px);
+}
+
+.hero-stat-card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--moss-soft);
+    color: var(--moss-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.hero-stat-card strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+
+.hero-stat-card span {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+
+/* ---------- SECTION HEADER ---------- */
+.section-head { margin-bottom: var(--space-7); }
+.section-head h2 {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--ink);
+    max-width: 560px;
+}
+.section-head p {
+    color: var(--ink-muted);
+    max-width: 480px;
+    margin-top: var(--space-3);
+}
+.section-head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+.section-link {
+    color: var(--ink) !important;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid var(--clay);
+    padding-bottom: 3px;
+    white-space: nowrap;
+}
+.section-link:hover { color: var(--clay-dark) !important; }
+
+/* ---------- PRODUCT TILE ---------- */
+.p-tile {
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    text-decoration: none;
+}
+.p-tile:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+.p-tile-img { position: relative; aspect-ratio: 1/1; overflow: hidden; background: var(--cream-deep); }
+.p-tile-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.p-tile:hover .p-tile-img img { transform: scale(1.06); }
+
+.p-tile-chip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--paper);
+    color: var(--moss-dark);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+}
+
+.p-tile-body { padding: var(--space-4) var(--space-4) var(--space-5); flex-grow: 1; display: flex; flex-direction: column; }
+.p-tile-body h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.p-tile-farmer { font-size: 0.8rem; color: var(--ink-muted); margin-bottom: var(--space-3); }
+.p-tile-farmer i { color: var(--moss); margin-right: 4px; }
+.p-tile-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.p-tile-price { font-family: var(--font-heading); font-weight: 600; color: var(--ink); font-size: 1.1rem; }
+.p-tile-price small { font-family: var(--font-body); font-weight: 400; color: var(--ink-muted); font-size: 0.72rem; }
+.p-tile-add {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--moss-soft); color: var(--moss-dark);
+    border: none; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+.p-tile-add:hover { background: var(--moss); color: #fff; }
+
+/* ---------- VALUE PROPS (numbered, editorial — not icon circles) ---------- */
+.value-row { border-top: 1px solid var(--sand); padding: var(--space-6) 0; display: flex; gap: var(--space-6); align-items: flex-start; }
+.value-row:last-child { border-bottom: 1px solid var(--sand); }
+.value-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-style: italic;
+    color: var(--clay);
+    width: 70px;
+    flex-shrink: 0;
+}
+.value-text h4 { font-family: var(--font-heading); font-size: 1.2rem; color: var(--ink); margin-bottom: 6px; }
+.value-text p { color: var(--ink-muted); margin: 0; max-width: 520px; }
+
+/* ---------- HOW IT WORKS ---------- */
+.how-card { text-align: left; }
+.how-num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--clay);
+    line-height: 1;
+    margin-bottom: var(--space-3);
+}
+.how-card h4 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--ink); margin-bottom: 6px; }
+.how-card p { color: var(--ink-muted); font-size: 0.92rem; }
+
+/* ---------- FARMER CTA BANNER ---------- */
+.farmer-cta {
+    background: var(--ink);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-7);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+}
+.farmer-cta h2 { color: var(--cream); font-size: 2rem; max-width: 480px; }
+.farmer-cta p { color: rgba(250,246,238,0.65); max-width: 440px; margin-top: var(--space-3); }
+
+/* ---------- FINAL CTA ---------- */
+.final-cta { text-align: center; padding: var(--space-8) 0 var(--space-9); }
+.final-cta h2 { font-size: 2.6rem; max-width: 640px; margin: 0 auto var(--space-5); }
+
+@media (max-width: 991px) {
+    .hero-2 h1 { font-size: 2.5rem; }
+    /* .hero-stat-card no longer needs a mobile override — it's
+       positioned via right/bottom inside .hero-media, which has
+       overflow:hidden, so it can never escape the image bounds. */
+    .farmer-cta { text-align: center; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .hero-2 h1 { font-size: 2rem; }
+}
+</style>
+
+<!-- ================= HERO ================= -->
+<section class="hero-2">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+                <span class="ds-eyebrow hero-eyebrow">The direct farm marketplace</span>
+                <h1>Fresh food, <em>grown by someone you can name.</em></h1>
+                <p class="hero-sub">
+                    Seed2Sell connects verified farmers straight to your kitchen —
+                    no middlemen, no markups, just produce that left the soil days,
+                    not weeks, ago.
+                </p>
+                <div class="hero-cta-row">
+                    <a href="{% url 'shop' %}" class="hero-btn-primary">
+                        <i class="fa fa-arrow-right"></i> Browse the Marketplace
+                    </a>
+                    <a href="{% url 'auth_page' %}" class="hero-btn-secondary">
+                        Sell as a farmer
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-media">
+                    <img src="{% static 'img/farmer-bg.jpg' %}" alt="Farmer at work">
+                    <div class="hero-stat-card">
+                        <div class="icon"><i class="fa fa-leaf"></i></div>
+                        <div>
+                            <strong>{{ products|length }}+ fresh listings</strong>
+                            <span>added by verified farmers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= DISCOVER PRODUCTS ================= -->
+<section class="section-pad">
+    <div class="container">
+        <div class="section-head-row section-head">
+            <div>
+                <span class="ds-eyebrow">From the marketplace</span>
+                <h2>Newly listed, straight from the farm.</h2>
+            </div>
+            <a href="{% url 'shop' %}" class="section-link">View full marketplace →</a>
+        </div>
+
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'shop_detail' product.id %}" class="p-tile">
+                    <div class="p-tile-img">
+                        {% if product.category %}<span class="p-tile-chip">{{ product.category.name }}</span>{% endif %}
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/fruite-item-1.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="p-tile-body">
+                        <h3>{{ product.name }}</h3>
+                        <div class="p-tile-farmer"><i class="fa fa-user-circle"></i>{{ product.farmer.username }}</div>
+                        <div class="p-tile-footer">
+                            <span class="p-tile-price">₹{{ product.price }}<small> /{{ product.unit }}</small></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-muted">No products listed yet — check back soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ================= WHY SEED2SELL (editorial, numbered) ================= -->
+<section class="section-pad-sm" style="background: var(--cream-deep);">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <span class="ds-eyebrow">Why Seed2Sell</span>
+                <h2 class="mt-3" style="font-family: var(--font-display); font-size: 2.2rem;">
+                    Built to shorten the distance between soil and table.
+                </h2>
+            </div>
+            <div class="col-lg-8">
+
+                <div class="value-row">
+                    <div class="value-num">01</div>
+                    <div class="value-text">
+                        <h4>Direct from the farmer</h4>
+                        <p>Every listing is created and priced by the farmer who grew it — no distributor markup sitting between you and the harvest.</p>
+                    </div>
+                </div>
+
+                <div class="value-row">
+                    <div class="value-num">02</div>
+                    <div class="value-text">
+                        <h4>Verified sellers only</h4>
+                        <p>Farmers register and list through a verified account, so every product on the marketplace is tied to a real, accountable seller.</p>
+                    </div>
+                </div>
+
+                <div class="value-row">
+                    <div class="value-num">03</div>
+                    <div class="value-text">
+                        <h4>Transparent pricing</h4>
+                        <p>Prices are shown per unit — kilogram, litre, dozen, piece — so you always know exactly what you're paying for.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section-pad">
+    <div class="container">
+        <div class="section-head text-center mx-auto" style="max-width: 560px;">
+            <span class="ds-eyebrow justify-content-center">How it works</span>
+            <h2 class="mt-3">Three steps from browsing to your doorstep.</h2>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-4 how-card">
+                <div class="how-num">01</div>
+                <h4>Browse the marketplace</h4>
+                <p>Search, filter by category or price, and discover what's fresh right now.</p>
+            </div>
+            <div class="col-md-4 how-card">
+                <div class="how-num">02</div>
+                <h4>Add to your cart</h4>
+                <p>Pick your quantities and review a clear, itemized order summary.</p>
+            </div>
+            <div class="col-md-4 how-card">
+                <div class="how-num">03</div>
+                <h4>Checkout &amp; track</h4>
+                <p>Complete your order and follow it from your customer dashboard.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= BEST SELLERS ================= -->
+{% if best_sellers %}
+<section class="section-pad-sm" style="background: var(--cream-deep);">
+    <div class="container">
+        <div class="section-head-row section-head">
+            <div>
+                <span class="ds-eyebrow">Buyer favourites</span>
+                <h2>Best sellers this season.</h2>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for product in best_sellers %}
+            <div class="col-6 col-md-3">
+                <a href="{% url 'shop_detail' product.id %}" class="p-tile">
+                    <div class="p-tile-img">
+                        <span class="p-tile-chip">Best seller</span>
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/fruite-item-1.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="p-tile-body">
+                        <h3>{{ product.name }}</h3>
+                        <div class="p-tile-farmer"><i class="fa fa-user-circle"></i>{{ product.farmer.username }}</div>
+                        <div class="p-tile-footer">
+                            <span class="p-tile-price">₹{{ product.price }}<small> /{{ product.unit }}</small></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= VEGETABLES ================= -->
+{% if vegetables %}
+<section class="section-pad">
+    <div class="container">
+        <div class="section-head-row section-head">
+            <div>
+                <span class="ds-eyebrow">In season</span>
+                <h2>Fresh vegetables from the harvest.</h2>
+            </div>
+            <a href="{% url 'shop' %}" class="section-link">View all →</a>
+        </div>
+        <div class="row g-4">
+            {% for product in vegetables %}
+            <div class="col-6 col-md-3 col-lg-3">
+                <a href="{% url 'shop_detail' product.id %}" class="p-tile">
+                    <div class="p-tile-img">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/fruite-item-1.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="p-tile-body">
+                        <h3>{{ product.name }}</h3>
+                        <div class="p-tile-farmer"><i class="fa fa-user-circle"></i>{{ product.farmer.username }}</div>
+                        <div class="p-tile-footer">
+                            <span class="p-tile-price">₹{{ product.price }}<small> /{{ product.unit }}</small></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ================= FARMER CTA ================= -->
+<section class="section-pad-sm">
+    <div class="container">
+        <div class="farmer-cta">
+            <div>
+                <span class="ds-eyebrow" style="color: var(--clay);">For farmers</span>
+                <h2 class="mt-3">Have produce to sell? List it in minutes.</h2>
+                <p>Create a farmer account, add your products, and reach buyers directly — no distributor, no waiting.</p>
+            </div>
+            <a href="{% url 'auth_page' %}" class="hero-btn-primary" style="background: var(--clay);">
+                <i class="fa fa-seedling"></i> Start selling
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final-cta">
+    <div class="container">
+        <span class="ds-eyebrow justify-content-center">Ready when you are</span>
+        <h2 class="mt-3">Your next meal could start on a farm near you.</h2>
+        <a href="{% url 'shop' %}" class="hero-btn-primary">
+            <i class="fa fa-arrow-right"></i> Explore the Marketplace
+        </a>
+    </div>
+</section>
+
+{% endblock %}

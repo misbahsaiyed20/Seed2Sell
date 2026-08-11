@@ -1,0 +1,411 @@
+{% extends "master.html" %}
+
+{% block body %}
+<style>
+/* Font import removed — page now uses the site-wide Raleway + Open Sans loaded once in master.html. */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #f0f4f0;
+  font-family: var(--font-body);
+}
+
+.dashboard-wrapper {
+  min-height: 100vh;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto 40px;
+  animation: slideDown 0.6s ease-out;
+}
+
+.dashboard-header h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a3a1a;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  margin: 0;
+}
+
+.dashboard-header p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  margin-bottom: 0;
+}
+
+/* Card Styles */
+.dashboard-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.dashboard-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.dashboard-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dashboard-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(45, 106, 45, 0.15);
+}
+
+/* Card Top Section */
+.card-top {
+  background: linear-gradient(145deg, #1a3a1a, #2d6a2d);
+  padding: 40px 28px 48px;
+  text-align: center;
+  position: relative;
+}
+
+.card-top::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+}
+
+.card-icon-circle {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  font-size: 36px;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.card-top h2 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.card-top p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* Card Body */
+.card-body {
+  padding: 28px 24px 24px;
+}
+
+.card-stat-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #999;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a3a1a;
+  letter-spacing: -1px;
+}
+
+.stat-currency {
+  font-size: 18px;
+  color: #2d6a2d;
+  font-weight: 600;
+  vertical-align: super;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.meta-cell {
+  background: #f8fdf8;
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(45, 106, 45, 0.05);
+}
+
+.meta-label {
+  font-size: 11px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a1a;
+}
+
+.info-box {
+  background: #f0f7f0;
+  border: 1px solid #c8e6c8;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #2d5a2d;
+}
+
+.info-icon {
+  font-size: 16px;
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.2s;
+  border: none;
+}
+
+.card-btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2d6a2d, #1a3a1a);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(45, 106, 45, 0.35);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid #e0e0e0;
+  color: #555;
+}
+
+.btn-secondary:hover {
+  border-color: #2d6a2d;
+  color: #2d6a2d;
+  background: #f8fdf8;
+}
+
+.btn-disabled {
+  background: #f4f4f4;
+  color: #bbb;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card-top {
+    padding: 30px 20px 40px;
+  }
+
+  .card-body {
+    padding: 22px 18px 20px;
+  }
+
+  .stat-value {
+    font-size: 26px;
+  }
+
+  .card-icon-circle {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+}
+</style>
+
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <h1>Welcome, {{ request.user.username }} 👋</h1>
+    <p>Manage your orders, shop, and more</p>
+  </div>
+
+  <div class="dashboard-container">
+    <div class="cards-grid">
+
+      <!-- Orders Card -->
+      <div class="dashboard-card">
+        <div class="card-top">
+          <div class="card-icon-circle">📦</div>
+          <h2>My Orders</h2>
+          <p>View and track your orders</p>
+        </div>
+
+          <div class="btn-group">
+            <a href="{% url 'order_history' %}" class="card-btn btn-primary">
+              View All Orders
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Products Card -->
+      <div class="dashboard-card">
+        <div class="card-top">
+          <div class="card-icon-circle">🛍️</div>
+          <h2>Shop Products</h2>
+          <p>Discover and browse items</p>
+        </div>
+        <div class="card-body">
+
+          <div class="btn-group">
+            <a href="{% url 'shop' %}" class="card-btn btn-primary">
+              Start Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Card -->
+      <div class="dashboard-card">
+        <div class="card-top">
+          <div class="card-icon-circle">🛒</div>
+          <h2>My Cart</h2>
+          <p>Review your items</p>
+        </div>
+        <div class="card-body">
+
+          <div class="btn-group">
+            <a href="{% url 'cart' %}" class="card-btn btn-primary">
+              View Cart
+            </a>
+            <a href="{% url 'shop' %}" class="card-btn btn-secondary">
+              Continue Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

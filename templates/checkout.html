@@ -1,0 +1,805 @@
+{% extends "master.html" %}
+{% load static %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- Font link removed — page now uses the site-wide Raleway + Open Sans loaded once in master.html. -->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Aliased to design-system.css — these were already near-
+     identical to the canonical scale, so only pointed at the
+     shared tokens rather than rewritten line by line. */
+  --green-dark:   var(--seed-primary-dark);
+  --green-main:   var(--seed-primary);
+  --green-mid:    var(--seed-primary-light);
+  --green-light:  #66bb6a;
+  --green-pale:   var(--seed-primary-tint);
+  --green-ghost:  var(--seed-primary-tint-2);
+  --accent:       #00c853;
+  --text-dark:    var(--seed-text);
+  --text-muted:   var(--seed-text-muted);
+  --border:       var(--seed-border-strong);
+  --white:        var(--seed-surface);
+  --radius:       var(--radius-lg);
+  /* --shadow-sm / --shadow-md / --shadow-lg / --radius-sm are
+     intentionally not redeclared here — they already exist on
+     :root from design-system.css with the same names, so this
+     page inherits them directly. */
+}
+
+body {
+  font-family: var(--font-body);
+  background: #f4faf5;
+  color: var(--text-dark);
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  position: relative;
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+  padding: 64px 0 90px;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.07) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 40%);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 60px;
+  background: #f4faf5;
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.header-inner {
+  position: relative; z-index: 2;
+  text-align: center;
+}
+.header-inner h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--white);
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+.header-inner p {
+  color: rgba(255,255,255,0.78);
+  margin-top: 6px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+/* ===== STEPPER ===== */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 28px;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.step.active { color: var(--white); }
+.step.done { color: rgba(255,255,255,0.75); }
+.step-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+  background: transparent;
+}
+.step.active .step-dot {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--green-main);
+}
+.step.done .step-dot {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.6);
+  color: var(--white);
+}
+.step-line {
+  width: 48px; height: 2px;
+  background: rgba(255,255,255,0.25);
+  margin: 0 4px;
+}
+
+/* ===== LAYOUT ===== */
+.checkout-wrapper {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+}
+.card-accent {
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-dark), var(--green-light), var(--accent));
+}
+.card-body {
+  padding: 28px 28px 32px;
+}
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-title-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-title-icon svg { width: 18px; height: 18px; color: var(--green-main); }
+
+/* ===== SECTION LABELS ===== */
+.section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--green-main);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 22px 0;
+}
+
+/* ===== FLOATING LABEL INPUTS ===== */
+.field-group { display: flex; flex-direction: column; gap: 14px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.float-field {
+  position: relative;
+}
+.float-field svg.field-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px; height: 17px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color 0.2s;
+  z-index: 2;
+}
+.float-field textarea ~ svg.field-icon,
+.float-field.textarea-field svg.field-icon {
+  top: 22px;
+  transform: none;
+}
+.float-field label {
+  position: absolute;
+  left: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(.4,0,.2,1);
+  background: transparent;
+  padding: 0 4px;
+  z-index: 2;
+  font-weight: 400;
+}
+.float-field.textarea-field label {
+  top: 18px;
+  transform: none;
+}
+.float-field input,
+.float-field textarea {
+  width: 100%;
+  padding: 14px 44px 14px 42px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text-dark);
+  background: var(--green-ghost);
+  outline: none;
+  transition: all 0.22s ease;
+  position: relative;
+}
+.float-field textarea {
+  resize: none;
+  padding-top: 16px;
+}
+.float-field input:focus,
+.float-field textarea:focus {
+  border-color: var(--green-main);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+}
+.float-field input:focus ~ svg.field-icon,
+.float-field textarea:focus ~ svg.field-icon,
+.float-field input:not(:placeholder-shown) ~ svg.field-icon,
+.float-field textarea:not(:placeholder-shown) ~ svg.field-icon {
+  color: var(--green-main);
+}
+.float-field input:focus ~ label,
+.float-field input:not(:placeholder-shown) ~ label,
+.float-field textarea:focus ~ label,
+.float-field textarea:not(:placeholder-shown) ~ label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--green-main);
+  background: var(--white);
+  letter-spacing: 0.3px;
+}
+.float-field.textarea-field input:focus ~ label,
+.float-field.textarea-field textarea:focus ~ label,
+.float-field.textarea-field textarea:not(:placeholder-shown) ~ label {
+  top: 0;
+  transform: translateY(-50%);
+}
+
+/* Valid state checkmark */
+.float-field .check-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 18px; height: 18px;
+  background: #00c853;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+  z-index: 2;
+}
+.float-field.textarea-field .check-icon { top: 22px; transform: none; opacity: 0; transition: opacity 0.2s; }
+.float-field .check-icon svg { width: 10px; height: 10px; color: white; }
+.float-field input:valid:not(:placeholder-shown) ~ .check-icon,
+.float-field textarea:valid:not(:placeholder-shown) ~ .check-icon {
+  transform: translateY(-50%) scale(1);
+}
+.float-field.textarea-field textarea:valid:not(:placeholder-shown) ~ .check-icon {
+  transform: none;
+  opacity: 1;
+}
+
+/* ===== ORDER TABLE ===== */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.order-table thead tr {
+  border-bottom: 2px solid var(--green-pale);
+}
+.order-table thead th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 0 12px;
+}
+.order-table thead th:last-child { text-align: right; }
+.order-table tbody tr {
+  border-bottom: 1px solid var(--green-ghost);
+  transition: background 0.15s;
+}
+.order-table tbody tr:hover { background: var(--green-ghost); }
+.order-table tbody td {
+  padding: 13px 8px 13px 0;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+}
+.order-table tbody td:last-child { text-align: right; font-weight: 600; }
+.product-name { font-weight: 500; }
+.product-qty {
+  display: inline-block;
+  background: var(--green-pale);
+  color: var(--green-main);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-left: 6px;
+}
+.order-total-row td {
+  padding-top: 16px !important;
+  border-bottom: none !important;
+}
+.order-total-label {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.order-total-value {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--green-main) !important;
+}
+
+/* ===== PAYMENT CARDS ===== */
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.payment-card {
+  position: relative;
+  cursor: pointer;
+}
+.payment-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+.payment-card-inner {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--green-ghost);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.payment-card input:checked + .payment-card-inner {
+  border-color: var(--green-main);
+  background: var(--green-pale);
+  box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+}
+.payment-card-inner:hover {
+  border-color: var(--green-mid);
+  background: var(--green-pale);
+}
+.payment-card-icon {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+.payment-card-icon svg { width: 20px; height: 20px; }
+.payment-card-label { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+.payment-card-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; }
+.payment-selected-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green-main);
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+.payment-card input:checked + .payment-card-inner .payment-selected-dot { opacity: 1; }
+
+/* ===== UPI SLIDE ===== */
+#upiOptions {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1), opacity 0.25s;
+  opacity: 0;
+}
+#upiOptions.open {
+  max-height: 100px;
+  opacity: 1;
+}
+
+/* ===== PLACE ORDER BUTTON ===== */
+.place-order-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(46,125,50,0.35);
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.place-order-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.place-order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(46,125,50,0.45);
+}
+.place-order-btn:hover::before { opacity: 1; }
+.place-order-btn:active { transform: translateY(0); }
+.place-order-btn span, .place-order-btn svg { position: relative; z-index: 1; }
+.place-order-btn .btn-spinner {
+  display: none;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.place-order-btn.loading .btn-spinner { display: block; }
+.place-order-btn.loading .btn-text { opacity: 0.7; }
+
+/* ===== TRUST BADGE ===== */
+.trust-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.trust-badge svg { width: 13px; height: 13px; color: var(--green-mid); }
+
+/* ===== STICKY SUMMARY ===== */
+.sticky-col { position: sticky; top: 24px; }
+
+/* ===== EMPTY CART ===== */
+.empty-cart {
+  text-align: center;
+  padding: 32px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .checkout-grid { grid-template-columns: 1fr; }
+  .sticky-col { position: static; }
+}
+@media (max-width: 560px) {
+  .card-body { padding: 20px 16px 24px; }
+  .field-row { grid-template-columns: 1fr; }
+  .payment-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<!-- ===== HEADER ===== -->
+<div class="page-header">
+  <div class="header-inner container">
+    <h1>Checkout</h1>
+    <p>You're almost there — complete your order below</p>
+    <div class="stepper">
+      <div class="step done">
+        <div class="step-dot">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        Cart
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-dot">2</div>
+        Checkout
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        Confirm
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="checkout-wrapper">
+<form method="POST" action="{% url 'place_order' %}" id="checkoutForm">
+{% csrf_token %}
+
+<div class="checkout-grid">
+
+  <!-- ===== LEFT: BILLING DETAILS ===== -->
+  <div>
+    <div class="card">
+      <div class="card-accent"></div>
+      <div class="card-body">
+
+        <div class="card-title">
+          <div class="card-title-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          Billing Details
+        </div>
+
+        <!-- PERSONAL INFO -->
+        <div class="section-label">Personal Information</div>
+        <div class="field-group">
+          <div class="float-field">
+            <input type="text" name="full_name" id="full_name" placeholder=" " required autocomplete="name"/>
+            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <label for="full_name">Full Name</label>
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- ADDRESS -->
+        <div class="section-label">Delivery Address</div>
+        <div class="field-group">
+          <div class="float-field">
+            <input type="text" name="address" id="address" placeholder=" " required autocomplete="street-address"/>
+            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+            <label for="address">Street Address</label>
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="float-field">
+              <input type="text" name="city" id="city" placeholder=" " required autocomplete="address-level2"/>
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              <label for="city">City</label>
+              <div class="check-icon">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+              </div>
+            </div>
+            <div class="float-field">
+              <input type="text" name="pincode" id="pincode" placeholder=" " required maxlength="6" pattern="[0-9]{6}" autocomplete="postal-code"/>
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <label for="pincode">Pincode</label>
+              <div class="check-icon">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- CONTACT -->
+        <div class="section-label">Contact Details</div>
+        <div class="field-group">
+          <div class="field-row">
+            <div class="float-field">
+              <input type="tel" name="mobile" id="mobile" placeholder=" " required maxlength="10" pattern="[0-9]{10}" autocomplete="tel"/>
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l1.88-1.88a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <label for="mobile">Mobile Number</label>
+              <div class="check-icon">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+              </div>
+            </div>
+            <div class="float-field">
+              <input type="email" name="email" id="email" placeholder=" " required autocomplete="email"/>
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/>
+              </svg>
+              <label for="email">Email Address</label>
+              <div class="check-icon">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-field textarea-field">
+            <textarea name="order_notes" id="order_notes" rows="3" placeholder=" "></textarea>
+            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <label for="order_notes">Order Notes (optional)</label>
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RIGHT: ORDER SUMMARY + PAYMENT ===== -->
+  <div class="sticky-col">
+    <div class="card">
+      <div class="card-accent"></div>
+      <div class="card-body">
+
+        <div class="card-title">
+          <div class="card-title-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+          </div>
+          Your Order
+        </div>
+
+        <!-- ORDER TABLE -->
+        {% if cart_items %}
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items %}
+            <tr>
+              <td>
+                <span class="product-name">{{ item.product.name }}</span>
+                <span class="product-qty">x{{ item.quantity }}</span>
+              </td>
+              <td>Rs. {{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="order-total-row">
+              <td class="order-total-label">Grand Total</td>
+              <td class="order-total-value">Rs. {{ total }}</td>
+            </tr>
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty-cart">Your cart is empty.</div>
+        {% endif %}
+
+        <div class="section-divider"></div>
+
+        <!-- PAYMENT -->
+        <div class="section-label">Payment Method</div>
+
+        <div class="payment-grid">
+          <label class="payment-card">
+            <input type="radio" name="payment_method" value="COD" checked onchange="togglePayment()"/>
+            <div class="payment-card-inner">
+              <div class="payment-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <div class="payment-card-label">Cash</div>
+                <div class="payment-card-sub">Pay on delivery</div>
+              </div>
+              <div class="payment-selected-dot"></div>
+            </div>
+          </label>
+
+          <label class="payment-card">
+            <input type="radio" name="payment_method" value="UPI" onchange="togglePayment()"/>
+            <div class="payment-card-inner">
+              <div class="payment-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <div>
+                <div class="payment-card-label">UPI</div>
+                <div class="payment-card-sub">GPay / PhonePe</div>
+              </div>
+              <div class="payment-selected-dot"></div>
+            </div>
+          </label>
+        </div>
+
+        <!-- UPI INPUT -->
+        <div id="upiOptions" style="margin-top:12px;">
+          <div class="float-field" style="margin-top:4px;">
+            <input type="text" id="upi_id" name="upi_id" placeholder=" "/>
+            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            </svg>
+            <label for="upi_id">Enter UPI ID (e.g. name@upi)</label>
+          </div>
+        </div>
+
+        <!-- PLACE ORDER -->
+        <button type="submit" class="place-order-btn" id="placeOrderBtn">
+          <div class="btn-spinner"></div>
+          <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20,6 9,17 4,12"/>
+          </svg>
+          <span class="btn-text">Place Order</span>
+        </button>
+
+        <div class="trust-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          SSL Secured &nbsp;&bull;&nbsp; 100% Safe Checkout
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</form>
+</div>
+
+<script>
+function togglePayment() {
+  const upiSelected = document.querySelector('input[value="UPI"]').checked;
+  const upiOptions = document.getElementById("upiOptions");
+  if (upiSelected) {
+    upiOptions.classList.add("open");
+  } else {
+    upiOptions.classList.remove("open");
+  }
+}
+
+// Loading state on submit
+document.getElementById("checkoutForm").addEventListener("submit", function() {
+  const btn = document.getElementById("placeOrderBtn");
+  btn.classList.add("loading");
+  btn.disabled = true;
+});
+</script>
+
+{% endblock %}
+```

@@ -1,0 +1,66 @@
+{% extends "master.html" %}
+{% block body %}
+
+<style>
+.processing-wrap {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-7) 16px;
+}
+.processing-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--paper);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-7) var(--space-6);
+    text-align: center;
+}
+.processing-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto var(--space-5);
+    font-size: 1.8rem;
+}
+.processing-icon.ok { background: var(--moss-soft); color: var(--moss-dark); }
+.processing-icon.fail { background: #f6dfda; color: var(--danger); }
+.processing-card h4 { font-family: var(--font-heading); color: var(--ink); margin-bottom: var(--space-3); }
+.processing-card p { color: var(--ink-muted); margin-bottom: var(--space-2); }
+.processing-card strong { color: var(--ink); font-family: var(--font-body); }
+.processing-card .btn { margin-top: var(--space-5); }
+</style>
+
+<div class="processing-wrap">
+    <div class="processing-card">
+
+    {% if order.payment_status == "PAID" %}
+        <div class="processing-icon ok"><i class="fa fa-check"></i></div>
+        <h4>Payment Successful</h4>
+        <p>UPI Reference ID</p>
+        <strong>{{ order.upi_reference }}</strong>
+
+        <script>
+            setTimeout(function () {
+                window.location.href =
+                "{% url 'order_success' order.id %}";
+            }, 2500);
+        </script>
+
+    {% else %}
+        <div class="processing-icon fail"><i class="fa fa-times"></i></div>
+        <h4>Payment Failed</h4>
+        <p>Please try again using UPI</p>
+
+        <a href="{% url 'upi_payment' order.id %}"
+           class="btn btn-success">
+           Retry Payment
+        </a>
+    {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
