@@ -22,8 +22,14 @@
    1. GLOBAL / BASE
 ============================================================= */
 
+/* NOTE: body's padding-top (fixed-navbar offset) is already set
+   correctly in style.css (96px). Do NOT redeclare it here — an
+   earlier unconditional override of 66px here (outside any
+   @media block, so it silently applied at every width, not just
+   mobile) was undercutting the real navbar height and clipping
+   the top of page content on pages without their own extra
+   top-padding cushion (e.g. checkout's header). */
 body {
-    padding-top: 66px; /* offset for fixed navbar */
     overflow-x: hidden;
 }
 

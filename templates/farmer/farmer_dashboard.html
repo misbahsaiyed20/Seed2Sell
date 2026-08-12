@@ -130,6 +130,16 @@
     }
 
     .order-row { transition: opacity 0.4s ease, transform 0.4s ease; }
+
+    /* Mobile: header padding + the badge/dark-toggle group were
+       too wide combined to fit one row at narrow widths, causing
+       the Dark Mode button to overflow past the card's edge. */
+    @media (max-width: 576px) {
+        .dashboard-header.p-5 { padding: 1.5rem !important; }
+        .dashboard-header .text-end.d-flex { flex-wrap: wrap; gap: 10px !important; }
+        .dashboard-header .badge { font-size: 0.78rem; padding: 8px 14px !important; }
+        .dark-toggle { padding: 8px 14px; font-size: 0.82rem; }
+    }
 </style>
 
 <div class="container py-5">

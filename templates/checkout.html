@@ -512,6 +512,15 @@ body {
   .card-body { padding: 20px 16px 24px; }
   .field-row { grid-template-columns: 1fr; }
   .payment-grid { grid-template-columns: 1fr; }
+
+  /* Stepper: labels were overlapping at narrow widths (fixed
+     48px connector lines + uppercase text left no room to
+     wrap). Hide labels, keep the numbered dots + lines so the
+     step progress is still visible without colliding. */
+  .step span.step-label { display: none; }
+  .step-dot { width: 24px; height: 24px; font-size: 0.65rem; }
+  .step-line { width: 28px; }
+  .stepper { gap: 0; }
 }
 </style>
 
@@ -525,17 +534,17 @@ body {
         <div class="step-dot">
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="2,6 5,9 10,3"/></svg>
         </div>
-        Cart
+        <span class="step-label">Cart</span>
       </div>
       <div class="step-line"></div>
       <div class="step active">
         <div class="step-dot">2</div>
-        Checkout
+        <span class="step-label">Checkout</span>
       </div>
       <div class="step-line"></div>
       <div class="step">
         <div class="step-dot">3</div>
-        Confirm
+        <span class="step-label">Confirm</span>
       </div>
     </div>
   </div>
